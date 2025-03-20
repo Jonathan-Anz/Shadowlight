@@ -20,7 +20,16 @@ public class GameManager : MonoBehaviour
         // Set the player lives
         _playerLives = _defaultPlayerLives;
 
-        // TEMP: Spawn an enemy
+        // TEMP: Spawn some enemies
+        //_enemyManager.SpawnEnemy(_pathManager.ActivePath);
+        SpawnEnemy();
+        Invoke("SpawnEnemy", 0.5f);
+        Invoke("SpawnEnemy", 1.5f);
+    }
+
+    // TEMP: Invoke doesn't allow parameters
+    private void SpawnEnemy()
+    {
         _enemyManager.SpawnEnemy(_pathManager.ActivePath);
     }
 
