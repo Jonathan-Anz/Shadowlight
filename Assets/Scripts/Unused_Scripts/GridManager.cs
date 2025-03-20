@@ -10,10 +10,10 @@ public class GridManager : MonoBehaviour
 
     private Dictionary<Vector2, Tile> tiles;
 
-    void Awake()
-    {
-        GenerateGrid();
-    }
+    // void Awake()
+    // {
+    //     GenerateGrid();
+    // }
 
     // Creates a grid of tiles
     private void GenerateGrid()
