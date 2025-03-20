@@ -659,6 +659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pathManager: {fileID: 1772672504}
   _enemyManager: {fileID: 369344395}
+  _defaultPlayerLives: 100
 --- !u!1001 &1471857302
 PrefabInstance:
   m_ObjectHideFlags: 0

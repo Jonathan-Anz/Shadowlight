@@ -48,6 +48,7 @@ MonoBehaviour:
   _name: Test Enemy
   _health: 10
   _speed: 3
+  _damage: 10
 --- !u!212 &8626332155187017865
 SpriteRenderer:
   m_ObjectHideFlags: 0

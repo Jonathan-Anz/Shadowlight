@@ -6,6 +6,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private string _name;
     [SerializeField] private int _health;
     [SerializeField] private float _speed;
+    [SerializeField] private int _damage;
+
+    // Each enemy has a reference to the enemy manager
+    private EnemyManager _enemyManager = null;
 
     // Each enemy needs a path to follow
     private Path _path = null;
@@ -17,12 +21,16 @@ public class Enemy : MonoBehaviour
     public string Name => _name;
     public int Health => _health;
     public float Speed => _speed;
+    public int Damage => _damage;
     public float PercentAlongPath => _percentAlongPath;
 
 
     // Call this method when an enemy is spawned
-    public void InitializeEnemy(Path path)
+    public void InitializeEnemy(EnemyManager em, Path path)
     {
+        // Set this enemy's manager
+        _enemyManager = em;
+
         // Set this enemy's path
         _path = path;
 
@@ -43,7 +51,7 @@ public class Enemy : MonoBehaviour
         // Check if there is a path to follow
         if (_path == null)
         {
-            Debug.LogWarning($"Enemy: {Name} has no path to follow!");
+            Debug.LogWarning($"Enemy: ({_name}) has no path to follow!");
             return;
         }
 
@@ -54,7 +62,7 @@ public class Enemy : MonoBehaviour
             Vector2 previousPosition = transform.position;
             transform.position = Vector2.MoveTowards(transform.position,
                                                     _path.Points[_pathPointIndex].transform.position,
-                                                    Speed * Time.deltaTime);
+                                                    _speed * Time.deltaTime);
 
             // Calculate the total distance traveled
             _distanceTraveled += Vector2.Distance(previousPosition, transform.position);
@@ -68,6 +76,14 @@ public class Enemy : MonoBehaviour
             if (transform.position == _path.Points[_pathPointIndex].transform.position)
             {
                 _pathPointIndex++;
+            }
+
+            // Check if the enemy reached the end of the path
+            // Use 0.999 to allow some room for error
+            if (_percentAlongPath >= 0.999f)
+            {
+                //Debug.Log($"Enemy: ({_name}) reached the end!");
+                _enemyManager.ReachedEndOfPath(this);
             }
         }
     }
