@@ -24,6 +24,8 @@ public class Path : MonoBehaviour
         // Calculate the path's total distance
         CalculatePathDistance();
         //Debug.Log($"Total path distance: {_totalPathDistance}");
+
+        RenderPath();
     }
 
     private void CalculatePathDistance()
@@ -33,6 +35,19 @@ public class Path : MonoBehaviour
         {
             _totalPathDistance += Vector2.Distance(_points[i].transform.position,
                                                     _points[i + 1].transform.position);
+        }
+    }
+
+    // Uses LineRenderer to create a path in the game screen
+    private void RenderPath()
+    {
+        LineRenderer line = GetComponent<LineRenderer>();
+        line.positionCount = _points.Length;
+
+        // Sets the vertices of the line from the path points
+        for (int i = 0; i < _points.Length; i++)
+        {
+            line.SetPosition(i, _points[i].position);
         }
     }
 
