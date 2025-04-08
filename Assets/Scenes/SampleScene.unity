@@ -763,7 +763,7 @@ LineRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 5
+    numCornerVertices: 0
     numCapVertices: 5
     alignment: 0
     textureMode: 0
@@ -1330,6 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _towerPrefab: {fileID: 61579914623378698, guid: b5acc808c27003d48a91a010e4c5174f, type: 3}
+  _tileSize: 2
 --- !u!114 &1022001170
 MonoBehaviour:
   m_ObjectHideFlags: 0

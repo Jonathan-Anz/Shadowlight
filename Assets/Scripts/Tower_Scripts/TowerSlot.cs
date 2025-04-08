@@ -8,6 +8,9 @@ public class TowerSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     // Tower to create
     [SerializeField] private Object _towerPrefab;
 
+    // Temporary, will need to get this somewhere
+    [SerializeField] private float _tileSize = 1;
+
     private TowerSlotManager _towerSlotManager;
     private Vector3 _startPos;
 
@@ -35,12 +38,8 @@ public class TowerSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         // Without using camera, it will use canvas position instead.
         Vector3 towerPosition = _towerSlotManager.camera.ScreenToWorldPoint(transform.position);
 
-        // Locks the tower position to a tile.
-        towerPosition.x = Mathf.Round(towerPosition.x);
-        towerPosition.y = Mathf.Round(towerPosition.y);
-
-        // Makes sure that the object position is in z = 0.
-        towerPosition.z = 0;
+        // Snaps tower position to tile.
+        towerPosition = SnapToTileSize(towerPosition, _tileSize);
 
         // Creates the tower in that position.
         Object tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity);
@@ -49,5 +48,25 @@ public class TowerSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         transform.position = _startPos;
     }
 
+    // Snaps position to middle of tiles.
+    private Vector3 SnapToTileSize(Vector3 position, float tileSize)
+    {
+        Vector3 newPosition = Vector3.zero;
+        newPosition.x = SnapToFloat(position.x, tileSize);
+        newPosition.y = SnapToFloat(position.y, tileSize);
+
+        return newPosition;
+    }
+
+    // Snaps float to middle of the target float multiple.
+    private float SnapToFloat(float num, float floatSize)
+    {
+        int multiple = (int) Mathf.Floor(num / floatSize);
+
+        // Middle of the float
+        float remainder = floatSize / 2;
+
+        return floatSize * multiple + remainder;
+    }
  
 }
