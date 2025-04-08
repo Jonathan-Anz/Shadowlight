@@ -24,6 +24,9 @@ public class Tower : MonoBehaviour
     private float _attackTimer = 0f;
     private Enemy _currentTarget = null;
 
+    // Range
+    private CircleCollider2D _rangeCollider;
+
     // Getters
     public string Name => _name;
     public float Range => _range;
@@ -40,6 +43,10 @@ public class Tower : MonoBehaviour
     public void InitializeTower()
     {
         _attackTimer = 0f;
+        _rangeCollider = GetComponent<CircleCollider2D>();
+
+        // Changes range to value set in inspector
+        ChangeRange(_range);
     }
 
     // Add enemies to enemies in range list when entering the tower's trigger collider
@@ -116,6 +123,13 @@ public class Tower : MonoBehaviour
         Debug.Log("Attack!");
     }
 
+    // Changes the range of the tower
+    private void ChangeRange(float range)
+    {
+        // Divides by scale x to offset scale applied on collider
+        _rangeCollider.radius = range / transform.localScale.x;
+    }
+
     // DEBUG
     void OnDrawGizmos()
     {
@@ -125,5 +139,4 @@ public class Tower : MonoBehaviour
     {
         DebugExtension.DrawCircle(transform.position, -Vector3.forward, Color.blue, _range);
     }
-
 }
