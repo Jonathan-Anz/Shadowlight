@@ -1330,7 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _towerPrefab: {fileID: 61579914623378698, guid: b5acc808c27003d48a91a010e4c5174f, type: 3}
-  _tileSize: 2
+  _tileSize: 1
 --- !u!114 &1022001170
 MonoBehaviour:
   m_ObjectHideFlags: 0
