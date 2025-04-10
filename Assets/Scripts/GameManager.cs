@@ -1,15 +1,29 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     // Other managers: set in inspector
+    [Header("Managers")]
     [SerializeField] private PathManager _pathManager;
     [SerializeField] private EnemyManager _enemyManager;
 
     // Player stats
+    [Header("Player Stats")]
     private int _playerLives = 0;
+    private int _playerOrbs = 0;
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
 
+    // Waves
+    [Header("Waves")]
+    [SerializeField] private int _maxWaves;
+    private int _currentWave = 1;
+
+    // UI
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI _livesText;
+    [SerializeField] private TextMeshProUGUI _orbsText;
+    [SerializeField] private TextMeshProUGUI _wavesText;
 
     // Initializiation
     private void Awake()
@@ -25,6 +39,9 @@ public class GameManager : MonoBehaviour
         SpawnEnemy();
         Invoke("SpawnEnemy", 0.5f);
         Invoke("SpawnEnemy", 1.5f);
+
+        // Add text to UI
+        UpdateUIText();
     }
 
     // TEMP: Invoke doesn't allow parameters
@@ -49,6 +66,34 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Player lost {damage} lives!");
 
         // Check if the player is out of lives
+        if (_playerLives <= 0)
+        {
+            Debug.Log("Player is dead!");
+        }
+
+        UpdateLivesText();
     }
 
+    // UI TEXT FUNCTIONS
+    private void UpdateUIText()
+    {
+        UpdateWavesText();
+        UpdateLivesText();
+        UpdateOrbsText();
+    }
+
+    private void UpdateWavesText()
+    {
+        _wavesText.text = $"<b>Wave</b>: {_currentWave}/{_maxWaves}";
+    }
+
+    private void UpdateLivesText()
+    {
+        _livesText.text = $"<b>Lives</b>: {_playerLives}";
+    }
+
+    private void UpdateOrbsText()
+    {
+        _orbsText.text = $"<b>Orbs</b>: {_playerOrbs}";
+    }
 }

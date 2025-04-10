@@ -1874,6 +1874,10 @@ MonoBehaviour:
   _pathManager: {fileID: 1772672504}
   _enemyManager: {fileID: 369344395}
   _defaultPlayerLives: 100
+  _maxWaves: 10
+  _livesText: {fileID: 284514934}
+  _orbsText: {fileID: 1003079238}
+  _wavesText: {fileID: 1984645529}
 --- !u!1 &1244788780
 GameObject:
   m_ObjectHideFlags: 0
