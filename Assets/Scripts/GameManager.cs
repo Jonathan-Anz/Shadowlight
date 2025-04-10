@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] private PathManager _pathManager;
     [SerializeField] private EnemyManager _enemyManager;
+    [SerializeField] private TextUIManager _textUIManager;
 
     // Player stats
     [Header("Player Stats")]
@@ -18,12 +19,6 @@ public class GameManager : MonoBehaviour
     [Header("Waves")]
     [SerializeField] private int _maxWaves;
     private int _currentWave = 1;
-
-    // UI
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI _livesText;
-    [SerializeField] private TextMeshProUGUI _orbsText;
-    [SerializeField] private TextMeshProUGUI _wavesText;
 
     // Initializiation
     private void Awake()
@@ -41,7 +36,7 @@ public class GameManager : MonoBehaviour
         Invoke("SpawnEnemy", 1.5f);
 
         // Add text to UI
-        UpdateUIText();
+        InstantiateUIText();
     }
 
     // TEMP: Invoke doesn't allow parameters
@@ -71,29 +66,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player is dead!");
         }
 
-        UpdateLivesText();
+        // Updates the lives text.
+        _textUIManager.UpdateLivesText(_playerLives);
     }
 
     // UI TEXT FUNCTIONS
-    private void UpdateUIText()
+    private void InstantiateUIText()
     {
-        UpdateWavesText();
-        UpdateLivesText();
-        UpdateOrbsText();
-    }
-
-    private void UpdateWavesText()
-    {
-        _wavesText.text = $"<b>Wave</b>: {_currentWave}/{_maxWaves}";
-    }
-
-    private void UpdateLivesText()
-    {
-        _livesText.text = $"<b>Lives</b>: {_playerLives}";
-    }
-
-    private void UpdateOrbsText()
-    {
-        _orbsText.text = $"<b>Orbs</b>: {_playerOrbs}";
+        _textUIManager.UpdateWavesText(_currentWave, _maxWaves);
+        _textUIManager.UpdateLivesText(_playerLives);
+        _textUIManager.UpdateOrbsText(_playerOrbs);
     }
 }

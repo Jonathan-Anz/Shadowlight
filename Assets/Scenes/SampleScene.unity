@@ -408,6 +408,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284514932}
   m_CullTransparentMesh: 1
+--- !u!1 &359318381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 359318382}
+  - component: {fileID: 359318383}
+  m_Layer: 0
+  m_Name: Text UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &359318382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359318381}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &359318383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359318381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c63974e1c7b5914280f40cfb0cbc2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _livesText: {fileID: 284514934}
+  _orbsText: {fileID: 1003079238}
+  _wavesText: {fileID: 1984645529}
 --- !u!1 &369344393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,11 +1920,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pathManager: {fileID: 1772672504}
   _enemyManager: {fileID: 369344395}
+  _textUIManager: {fileID: 359318383}
   _defaultPlayerLives: 100
   _maxWaves: 10
-  _livesText: {fileID: 284514934}
-  _orbsText: {fileID: 1003079238}
-  _wavesText: {fileID: 1984645529}
 --- !u!1 &1244788780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,6 +2573,7 @@ SceneRoots:
   - {fileID: 1092304981}
   - {fileID: 1772672503}
   - {fileID: 369344394}
+  - {fileID: 359318382}
   - {fileID: 437682050}
   - {fileID: 519420032}
   - {fileID: 593047962}
