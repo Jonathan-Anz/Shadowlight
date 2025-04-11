@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         Invoke("SpawnEnemy", 0.5f);
         Invoke("SpawnEnemy", 1.5f);
 
-        // Add text to UI
+        // Initialize text to UI
         InstantiateUIText();
     }
 
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         _textUIManager.UpdateLivesText(_playerLives);
     }
 
-    // UI TEXT FUNCTIONS
+    // Puts text within the UI at the start of runtime.
     private void InstantiateUIText()
     {
         _textUIManager.UpdateWavesText(_currentWave, _maxWaves);
