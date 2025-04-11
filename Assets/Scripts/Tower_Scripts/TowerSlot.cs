@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TowerSlot : MonoBehaviour, IDragHandler, IEndDragHandler
+public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     // Tower to create
     [SerializeField] private Object _towerPrefab;
@@ -17,19 +17,27 @@ public class TowerSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     // Start is called before the first frame update
     void Start()
     {
-        // Starting position bugs if there is no waiting time for some reason...
-        Invoke("InitializeTowerSlot", 0.01f);
+        InitializeTowerSlot();
     }
 
     private void InitializeTowerSlot()
     {
         _towerSlotManager = GetComponentInParent<TowerSlotManager>();
+        
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        // Stores position to restore it after dragging.
         _startPos = transform.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        // Makes the object follow the mouse.
         transform.position = Input.mousePosition;
+
+        // TODO: Make the object snap to the tiles as well.
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -68,5 +76,4 @@ public class TowerSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 
         return floatSize * multiple + remainder;
     }
- 
 }
