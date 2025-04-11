@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
         _playerLives = _defaultPlayerLives;
 
         // TEMP: Spawn some enemies
-        //_enemyManager.SpawnEnemy(_pathManager.ActivePath);
         SpawnEnemy();
         Invoke("SpawnEnemy", 0.5f);
         Invoke("SpawnEnemy", 1.5f);
@@ -49,10 +48,12 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EnemyManager.OnEnemyReachedEnd += RemoveLives;
+        EnemyManager.OnEnemyDied += AddOrbs;
     }
     private void OnDisable()
     {
         EnemyManager.OnEnemyReachedEnd -= RemoveLives;
+        EnemyManager.OnEnemyDied -= AddOrbs;
     }
 
     private void RemoveLives(int damage)
@@ -68,6 +69,12 @@ public class GameManager : MonoBehaviour
 
         // Updates the lives text.
         _textUIManager.UpdateLivesText(_playerLives);
+    }
+    private void AddOrbs(int orbs)
+    {
+        _playerOrbs += orbs;
+        //Debug.Log($"Player now has {_playerOrbs} orbs");
+        _textUIManager.UpdateOrbsText(_playerOrbs);
     }
 
     // Puts text within the UI at the start of runtime.

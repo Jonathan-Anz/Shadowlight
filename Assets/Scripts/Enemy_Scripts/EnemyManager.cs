@@ -11,6 +11,7 @@ public class EnemyManager : MonoBehaviour
 
     // Events
     public static event Action<int> OnEnemyReachedEnd;
+    public static event Action<int> OnEnemyDied;
 
 
     public void SpawnEnemy(Path path)
@@ -36,6 +37,9 @@ public class EnemyManager : MonoBehaviour
     // Enemies that die will call this function
     public void EnemyDied(Enemy enemy)
     {
+        // Trigger the OnEnemyDied event
+        OnEnemyDied?.Invoke(enemy.OrbAmount);
+
         _enemyList.Remove(enemy);
         Destroy(enemy.gameObject);
     }

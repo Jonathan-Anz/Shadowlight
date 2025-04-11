@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _health;
     [SerializeField] private float _speed;
     [SerializeField] private int _damage;
+    [SerializeField] private int _orbAmount;
 
     // Each enemy has a reference to the enemy manager
     private EnemyManager _enemyManager = null;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
     public int Health => _health;
     public float Speed => _speed;
     public int Damage => _damage;
+    public int OrbAmount => _orbAmount;
     public float PercentAlongPath => _percentAlongPath;
 
 
