@@ -23,12 +23,19 @@ public class EnemyManager : MonoBehaviour
     }
 
     // Enemies that reach the end of the path will call this function
-    public void ReachedEndOfPath(Enemy enemy)
+    public void EnemyReachedEndOfPath(Enemy enemy)
     {
         // Trigger the OnEnemyReachedEnd event
         OnEnemyReachedEnd?.Invoke(enemy.Damage);
 
         // Remove enemy from the enemy list and destroy it
+        _enemyList.Remove(enemy);
+        Destroy(enemy.gameObject);
+    }
+
+    // Enemies that die will call this function
+    public void EnemyDied(Enemy enemy)
+    {
         _enemyList.Remove(enemy);
         Destroy(enemy.gameObject);
     }

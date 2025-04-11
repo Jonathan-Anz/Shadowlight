@@ -6,15 +6,24 @@ public enum TowerTargetMode
 {
     First, Last, Strong, Weak
 }
+public enum TowerAttackType
+{
+    Melee, Ranged
+}
 
 public class Tower : MonoBehaviour
 {
     // Tower properties: set in inspector
     [SerializeField] private string _name;
     [SerializeField] private float _range;
-    [SerializeField] private int _attackPower;
     [SerializeField] private float _attackSpeed;
-    [SerializeField] private TowerTargetMode _targetMode;
+    [SerializeField] private TowerTargetMode _targetMode; // Change target mode to be modified in game?
+    [SerializeField] private TowerAttackType _attackType;
+    [Header("Melee Properties")]
+    [SerializeField] private int _attackPower;
+    [Header("Ranged Properties")]
+    [SerializeField] private GameObject _projectilePrefab;
+
 
     // Each tower has a list of enemies in its range
     private List<Enemy> _enemiesInRange = new List<Enemy>();
@@ -120,7 +129,24 @@ public class Tower : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Attack!");
+        //Debug.Log("Attack!");
+        if (_attackType == TowerAttackType.Melee)
+        {
+            // If melee tower:
+            // Remove health from enemy
+            // Play animation/sound
+
+            _currentTarget.DamageEnemy(_attackPower);
+        }
+        else if (_attackType == TowerAttackType.Ranged)
+        {
+            // If ranged tower:
+            // Spawn a projectile prefab
+            // Play animation/sound
+
+            Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
+            projectile.InitializeProjectile(_currentTarget);
+        }
     }
 
     // Changes the range of the tower

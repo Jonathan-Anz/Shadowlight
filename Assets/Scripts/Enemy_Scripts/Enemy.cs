@@ -83,8 +83,18 @@ public class Enemy : MonoBehaviour
             if (_percentAlongPath >= 0.999f)
             {
                 //Debug.Log($"Enemy: ({_name}) reached the end!");
-                _enemyManager.ReachedEndOfPath(this);
+                _enemyManager.EnemyReachedEndOfPath(this);
             }
+        }
+    }
+
+    public void DamageEnemy(int damage)
+    {
+        _health -= damage;
+        if (_health <= 0)
+        {
+            //Debug.Log("Enemy died!");
+            _enemyManager.EnemyDied(this);
         }
     }
 

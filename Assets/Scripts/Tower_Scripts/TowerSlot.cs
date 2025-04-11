@@ -44,7 +44,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         // Finds the mouse position relative to the world position.
         // Without using camera, it will use canvas position instead.
-        Vector3 towerPosition = _towerSlotManager.camera.ScreenToWorldPoint(transform.position);
+        Vector3 towerPosition = _towerSlotManager.cam.ScreenToWorldPoint(transform.position);
 
         // Snaps tower position to tile.
         towerPosition = SnapToTileSize(towerPosition, _tileSize);
