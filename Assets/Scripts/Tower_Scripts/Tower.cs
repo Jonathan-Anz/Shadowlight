@@ -156,6 +156,11 @@ public class Tower : MonoBehaviour
         _rangeCollider.radius = range / transform.localScale.x;
     }
 
+    private void OnMouseDown()
+    {
+        Debug.Log($"Clicked on {gameObject.name}");
+    }
+
     // DEBUG
     void OnDrawGizmos()
     {
