@@ -424,6 +424,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5289290436554780867, guid: 319a2780bdf45d648be3716bed059db4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8479917070990178956, guid: 319a2780bdf45d648be3716bed059db4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -619,7 +623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridVisual: {fileID: 1249271902}
-  selectedTileIndicator: {fileID: 319969699}
+  _selectedTileIndicator: {fileID: 319969699}
 --- !u!156049354 &437682052
 Grid:
   m_ObjectHideFlags: 0
@@ -1857,7 +1861,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _towerPrefab: {fileID: 61579914623378698, guid: b5acc808c27003d48a91a010e4c5174f, type: 3}
-  _tileSize: 1
 --- !u!114 &1022001170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2087,7 +2090,7 @@ GameObject:
   - component: {fileID: 1249271903}
   - component: {fileID: 1249271902}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Grid Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2115,7 +2118,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249271899}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

@@ -5,11 +5,12 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     // Singleton
-    public static GridManager instance;
+    public static GridManager Instance;
 
     private Grid _grid;
     [SerializeField] private MeshRenderer _gridVisual; // Set in inspector
-    [SerializeField] private SpriteRenderer selectedTileIndicator; // Set in inspector
+    [SerializeField] private SpriteRenderer _selectedTileIndicator; // Set in inspector
+    private Vector3 _selectedTilePosition;
 
     //[SerializeField] private int width, height; // Set in inspector
     //[SerializeField] private Tile tilePrefab; // Set in inspector
@@ -17,17 +18,20 @@ public class GridManager : MonoBehaviour
 
     //private Dictionary<Vector2, Tile> tiles;
 
+    // Getters
+    public Vector3 SelectedTilePosition => _selectedTilePosition;
+
 
     private void Awake()
     {
         // Make sure there is only one Grid Manager
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
 
-        instance = this;
+        Instance = this;
 
         _grid = GetComponent<Grid>();
 
@@ -36,12 +40,31 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
+        // Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // worldPosition.z = 0f;
+        // Vector3Int cellPosition = _grid.WorldToCell(worldPosition);
+        // _selectedTileIndicator.transform.position = cellPosition;
+        // //Debug.Log(cellPosition);
+    }
+
+    public void CalculateSelectedTile()
+    {
+        // Turn the mouse screen position into a world space point
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPosition.z = 0f;
-        Vector3Int cellPosition = _grid.WorldToCell(worldPosition);
-        selectedTileIndicator.transform.position = cellPosition;
-        //Debug.Log(cellPosition);
+
+        // Get the position of the tile
+        Vector3Int tilePosition = _grid.WorldToCell(worldPosition);
+
+        // Set the selected tile position
+        _selectedTilePosition = tilePosition;
+
+        // Set the selected tile indicator
+        _selectedTileIndicator.transform.position = _selectedTilePosition;
     }
+
+    public void HighlightGridVisual(bool value) => _gridVisual.enabled = value;
+    public void HighlightTileSelector(bool value) => _selectedTileIndicator.enabled = value;
 
     // Creates a grid of tiles
     // private void GenerateGrid()
