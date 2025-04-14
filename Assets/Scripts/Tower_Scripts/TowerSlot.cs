@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -67,6 +68,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         // Creates the tower in that position.
         Object tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity);
+
+        // Save the tower to the grid dictionary
+        GridManager.Instance.AddTowerToTile(towerPosition, tower.GetComponent<Tower>());
 
         // Resets tower slot sprite.
         transform.position = _startPos;

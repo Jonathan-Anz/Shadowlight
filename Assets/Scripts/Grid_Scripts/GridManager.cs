@@ -7,10 +7,17 @@ public class GridManager : MonoBehaviour
     // Singleton
     public static GridManager Instance;
 
+    // Grid
     private Grid _grid;
     [SerializeField] private MeshRenderer _gridVisual; // Set in inspector
     [SerializeField] private SpriteRenderer _selectedTileIndicator; // Set in inspector
     private Vector3 _selectedTilePosition;
+
+    // Selected tower
+    private Tower _selectedTower;
+
+    // Disabled tiles
+    private Dictionary<Vector3, Tower> _towerTiles = new Dictionary<Vector3, Tower>();
 
     //[SerializeField] private int width, height; // Set in inspector
     //[SerializeField] private Tile tilePrefab; // Set in inspector
@@ -24,7 +31,7 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
-        // Make sure there is only one Grid Manager
+        // Make sure there is only one instance
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -38,13 +45,39 @@ public class GridManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Update()
+
+    public void ClickOnGrid()
     {
-        // Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // worldPosition.z = 0f;
-        // Vector3Int cellPosition = _grid.WorldToCell(worldPosition);
-        // _selectedTileIndicator.transform.position = cellPosition;
-        // //Debug.Log(cellPosition);
+        //Debug.Log("Clicked on grid!");
+
+        CalculateSelectedTile();
+        //Debug.Log($"Selected tile: {_selectedTilePosition}");
+        
+        _selectedTower = GetTowerFromTile(_selectedTilePosition);
+
+        if (_selectedTower != null)
+        {
+            // Disable the tower panels
+            TextUIManager.Instance.HideTowerPanels();
+
+            // Enable the tower info panel
+            TextUIManager.Instance.ShowTowerInfo();
+
+            //Debug.Log(tower.name);
+            TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
+
+            // TODO: Show a circle sprite to display the range
+        }
+        else
+        {
+            // Disable the tower info panel
+            TextUIManager.Instance.HideTowerInfo();
+
+            // Enable the tower panels
+            TextUIManager.Instance.ShowTowerPanels();
+
+            // TODO: Hide the range sprite
+        }
     }
 
     public void CalculateSelectedTile()
@@ -61,6 +94,22 @@ public class GridManager : MonoBehaviour
 
         // Set the selected tile indicator
         _selectedTileIndicator.transform.position = _selectedTilePosition;
+    }
+
+
+
+    public void AddTowerToTile(Vector3 tile, Tower tower) => _towerTiles.Add(tile, tower);
+    public Tower GetTowerFromTile(Vector3 tile)
+    {
+        _towerTiles.TryGetValue(tile, out Tower tower);
+        return tower;
+    }
+    public void UpdateSelectedTowerTargetMode()
+    {
+        _selectedTower.ChangeTargetMode();
+
+        // Update the UI again
+        TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
     }
 
     public void HighlightGridVisual(bool value) => _gridVisual.enabled = value;

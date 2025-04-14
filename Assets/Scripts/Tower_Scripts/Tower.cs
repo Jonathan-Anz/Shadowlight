@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,6 +42,7 @@ public class Tower : MonoBehaviour
     public float Range => _range;
     public int AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
+    public TowerTargetMode TargetMode => _targetMode;
 
     // TEMP
     private void Awake()
@@ -154,6 +156,14 @@ public class Tower : MonoBehaviour
     {
         // Divides by scale x to offset scale applied on collider
         _rangeCollider.radius = range / transform.localScale.x;
+    }
+
+    // Changes the target mode of the tower (in a cycle)
+    public void ChangeTargetMode()
+    {
+        int num = (int)_targetMode;
+        num = (num + 1) % Enum.GetNames(typeof(TowerTargetMode)).Length;
+        _targetMode = (TowerTargetMode)num;
     }
 
     // DEBUG
