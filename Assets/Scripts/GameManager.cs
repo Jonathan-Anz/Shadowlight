@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // TODO: Turn all the managers into singletons!
     // Other managers: set in inspector
     [Header("Managers")]
     [SerializeField] private PathManager _pathManager;

@@ -32,7 +32,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Stores position to restore it after dragging.
         _startPos = transform.position;
 
-        // TODO: hide the tower selection panel
+        // TODO: hide the UI?
 
         // Highlight the grid
         GridManager.Instance.HighlightGridVisual(true);
@@ -66,20 +66,23 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Snaps tower position to tile.
         //towerPosition = SnapToTileSize(towerPosition, _tileSize);
 
+        // Resets tower slot sprite.
+        transform.position = _startPos;
+
+        // TODO: unhide the UI?
+
+        // Un-highlight the grid
+        GridManager.Instance.HighlightGridVisual(false);
+        GridManager.Instance.HighlightTileSelector(false);
+
+        // Check if the tile is valid
+        if (!GridManager.Instance.IsValidTile(towerPosition)) return;
+
         // Creates the tower in that position.
         Object tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity);
 
         // Save the tower to the grid dictionary
         GridManager.Instance.AddTowerToTile(towerPosition, tower.GetComponent<Tower>());
-
-        // Resets tower slot sprite.
-        transform.position = _startPos;
-
-        // TODO: unhide the tower selection panel
-
-        // Un-highlight the grid
-        GridManager.Instance.HighlightGridVisual(false);
-        GridManager.Instance.HighlightTileSelector(false);
     }
 
     // Snaps position to middle of tiles.

@@ -16,8 +16,10 @@ public class GridManager : MonoBehaviour
     // Selected tower
     private Tower _selectedTower;
 
-    // Disabled tiles
+    // Invalid tiles
     private Dictionary<Vector3, Tower> _towerTiles = new Dictionary<Vector3, Tower>();
+    private HashSet<Vector3> _invalidTiles = new HashSet<Vector3>();
+
 
     //[SerializeField] private int width, height; // Set in inspector
     //[SerializeField] private Tile tilePrefab; // Set in inspector
@@ -45,6 +47,28 @@ public class GridManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void CheckForPathTiles(int pathCheckDistance)
+    {
+        // Loop over every tile within path check distance
+        for (int x = -pathCheckDistance; x <= pathCheckDistance; x++)
+        {
+            for (int y = -pathCheckDistance; y <= pathCheckDistance; y++)
+            {
+                Vector3 tilePosition = new Vector3(x, y, -10f);
+
+                if (Physics.Raycast(tilePosition, Vector3.forward, Mathf.Infinity, LayerMasks.PathMask))
+                {
+                    // The path crosses this tile
+
+                    //Debug.Log(tilePosition);
+                    tilePosition.z = 0f;
+
+                    _invalidTiles.Add(tilePosition);
+                }
+                
+            }
+        }
+    }
 
     public void ClickOnGrid()
     {
@@ -92,13 +116,24 @@ public class GridManager : MonoBehaviour
         // Set the selected tile position
         _selectedTilePosition = tilePosition;
 
+        // Check if this tile is valid
+        bool isValidTile = IsValidTile(_selectedTilePosition);
+
         // Set the selected tile indicator
         _selectedTileIndicator.transform.position = _selectedTilePosition;
+        if (isValidTile) _selectedTileIndicator.color = new Color(1f, 1f, 1f, 0.4f); // Transparent white
+        else _selectedTileIndicator.color = new Color(1f, 0f, 0f, 0.4f); // Transparent red
     }
 
+    public bool IsValidTile(Vector3 tile) => !_invalidTiles.Contains(tile);
 
+    public void AddTowerToTile(Vector3 tile, Tower tower)
+    {
+        _towerTiles.Add(tile, tower);
 
-    public void AddTowerToTile(Vector3 tile, Tower tower) => _towerTiles.Add(tile, tower);
+        // Set the tile as invalid
+        _invalidTiles.Add(tile);
+    }
     public Tower GetTowerFromTile(Vector3 tile)
     {
         _towerTiles.TryGetValue(tile, out Tower tower);

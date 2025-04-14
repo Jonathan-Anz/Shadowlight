@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Path : MonoBehaviour
@@ -5,7 +6,9 @@ public class Path : MonoBehaviour
     // Path properties
     [SerializeField] private Transform[] _points; // Set in inspector
     [SerializeField, Range(0f, 5f)] private float _pathRadius; // Set in inspector
+    [SerializeField] private int _pathCheckDistance = 15; // Set in inspector
     private float _totalPathDistance;
+    private LineRenderer _lineRenderer;
 
     // Debug properties
     [Header("DEBUG")]
@@ -26,6 +29,9 @@ public class Path : MonoBehaviour
         //Debug.Log($"Total path distance: {_totalPathDistance}");
 
         RenderPath();
+
+        // Set the path tiles as invalid
+        SetPathTiles();
     }
 
     private void CalculatePathDistance()
@@ -41,14 +47,33 @@ public class Path : MonoBehaviour
     // Uses LineRenderer to create a path in the game screen
     private void RenderPath()
     {
-        LineRenderer line = GetComponent<LineRenderer>();
-        line.positionCount = _points.Length;
+        _lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer.positionCount = _points.Length;
 
         // Sets the vertices of the line from the path points
         for (int i = 0; i < _points.Length; i++)
         {
-            line.SetPosition(i, _points[i].position);
+            _lineRenderer.SetPosition(i, _points[i].position);
         }
+    }
+
+    private void SetPathTiles()
+    {
+        // Create a mesh and add a mesh collider
+        Mesh mesh = new Mesh();
+        MeshCollider col = gameObject.AddComponent<MeshCollider>();
+
+        // Set the new mesh to the line renderer
+        _lineRenderer.BakeMesh(mesh);
+        
+        // Set the collider to match the new mesh
+        col.sharedMesh = mesh;
+
+        // Check for path tiles by raycasting against the collider
+        GridManager.Instance.CheckForPathTiles(_pathCheckDistance);
+
+        // Remove the collider
+        Destroy(col);
     }
 
     // DEBUG
