@@ -79,10 +79,13 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (!GridManager.Instance.IsValidTile(towerPosition)) return;
 
         // Creates the tower in that position.
-        Object tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity);
+        Tower tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity).GetComponent<Tower>();
 
         // Save the tower to the grid dictionary
-        GridManager.Instance.AddTowerToTile(towerPosition, tower.GetComponent<Tower>());
+        GridManager.Instance.AddTowerToTile(towerPosition, tower);
+
+        // Initialize the tower
+        tower.InitializeTower();
     }
 
     // Snaps position to middle of tiles.

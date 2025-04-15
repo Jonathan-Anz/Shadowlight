@@ -74,9 +74,12 @@ public class GridManager : MonoBehaviour
     {
         //Debug.Log("Clicked on grid!");
 
+        // Hide the range of the previous selected tower
+        _selectedTower?.HideRangeVisual();
+
         CalculateSelectedTile();
         //Debug.Log($"Selected tile: {_selectedTilePosition}");
-        
+
         _selectedTower = GetTowerFromTile(_selectedTilePosition);
 
         if (_selectedTower != null)
@@ -90,7 +93,8 @@ public class GridManager : MonoBehaviour
             //Debug.Log(tower.name);
             TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
 
-            // TODO: Show a circle sprite to display the range
+            // Show the tower's range
+            _selectedTower.ShowRangeVisual();
         }
         else
         {
@@ -99,8 +103,6 @@ public class GridManager : MonoBehaviour
 
             // Enable the tower panels
             TextUIManager.Instance.ShowTowerPanels();
-
-            // TODO: Hide the range sprite
         }
     }
 

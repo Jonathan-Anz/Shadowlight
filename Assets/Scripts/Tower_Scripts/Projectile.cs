@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
 
     // Each projectile has a target to follow
     private Enemy _target;
-    private Vector3 moveDir = Vector3.zero;
+    private Vector3 _moveDir = Vector3.zero;
 
 
     // Initializer (call when the projectile is spawned)
@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
         // If this is a straightline projectile, set its movement direction
         if (_movementType == ProjectileMovementType.StraightLine)
         {
-            moveDir = (_target.transform.position - transform.position).normalized;
+            _moveDir = (_target.transform.position - transform.position).normalized;
         }
     }
 
@@ -55,7 +55,7 @@ public class Projectile : MonoBehaviour
         if (_movementType == ProjectileMovementType.StraightLine)
         {
             // If this is a straightline projectile, move along the initial direction
-            transform.position += moveDir * _speed * Time.deltaTime;
+            transform.position += _moveDir * _speed * Time.deltaTime;
         }
         else if (_movementType == ProjectileMovementType.Seeking)
         {

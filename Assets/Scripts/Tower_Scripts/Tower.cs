@@ -17,8 +17,9 @@ public class Tower : MonoBehaviour
     // Tower properties: set in inspector
     [SerializeField] private string _name;
     [SerializeField] private float _range;
+    [SerializeField] private SpriteRenderer _rangeVisual;
     [SerializeField] private float _attackSpeed;
-    [SerializeField] private TowerTargetMode _targetMode; // Change target mode to be modified in game?
+    [SerializeField] private TowerTargetMode _targetMode;
     [SerializeField] private TowerAttackType _attackType;
     [Header("Melee Properties")]
     [SerializeField] private int _attackPower;
@@ -44,11 +45,6 @@ public class Tower : MonoBehaviour
     public float AttackSpeed => _attackSpeed;
     public TowerTargetMode TargetMode => _targetMode;
 
-    // TEMP
-    private void Awake()
-    {
-        InitializeTower();
-    }
 
     // Call when spawning in the tower
     public void InitializeTower()
@@ -58,8 +54,92 @@ public class Tower : MonoBehaviour
 
         // Changes range to value set in inspector
         ChangeRange(_range);
+
+        //Debug.Log($"{_name} has been initialized");
     }
 
+    private void Update()
+    {
+        AttackCheck();
+    }
+
+    #region Attacking
+    private void AttackCheck()
+    {
+        // Reduce the attack cooldown
+        _attackTimer -= Time.deltaTime;
+
+        // If there are any enemies in range...
+        if (_hasEnemiesInRange)
+        {
+            // Find the current attack target
+            _currentTarget = FindCurrentTarget();
+
+            // DEBUG: highlight the current attack target
+            //Debug.DrawLine(transform.position, _currentTarget.transform.position, Color.green);
+
+            // Attack
+            if (_attackTimer <= 0f)
+            {
+                _attackTimer = _attackSpeed;
+                Attack();
+            }
+        }
+    }
+    
+    // Changes the target mode of the tower (in a cycle)
+    public void ChangeTargetMode()
+    {
+        int num = (int)_targetMode;
+        num = (num + 1) % Enum.GetNames(typeof(TowerTargetMode)).Length;
+        _targetMode = (TowerTargetMode)num;
+    }
+    
+    private Enemy FindCurrentTarget()
+    {
+        //Debug.Log($"Target mode: {_targetMode}");
+
+        // Eventually add second condition if multiple enemies are the same strength
+        // Second condition should be who is first
+
+        switch (_targetMode)
+        {
+            // Default is first
+            case TowerTargetMode.Strong:
+                return _enemiesInRange.OrderBy(e => e.Damage).First();
+            case TowerTargetMode.Weak:
+                return _enemiesInRange.OrderByDescending(e => e.Damage).First();
+            case TowerTargetMode.Last:
+                return _enemiesInRange.OrderBy(e => e.PercentAlongPath).First();
+            default:
+                return _enemiesInRange.OrderByDescending(e => e.PercentAlongPath).First();
+        }
+    }
+    
+    private void Attack()
+    {
+        //Debug.Log("Attack!");
+        if (_attackType == TowerAttackType.Melee)
+        {
+            // If melee tower:
+            // Remove health from enemy
+            // Play animation/sound
+
+            _currentTarget.DamageEnemy(_attackPower);
+        }
+        else if (_attackType == TowerAttackType.Ranged)
+        {
+            // If ranged tower:
+            // Spawn a projectile prefab
+            // Play animation/sound
+
+            Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
+            projectile.InitializeProjectile(_currentTarget);
+        }
+    }
+    #endregion
+
+    #region Range
     // Add enemies to enemies in range list when entering the tower's trigger collider
     // The tower needs a non-static rigidbody for this to work (set it to kinematic)
     private void OnTriggerEnter2D(Collider2D col)
@@ -84,92 +164,25 @@ public class Tower : MonoBehaviour
             if (_enemiesInRange.Count <= 0) _hasEnemiesInRange = false;
         }
     }
-
-    private void Update()
-    {
-        // Reduce the attack cooldown
-        _attackTimer -= Time.deltaTime;
-
-        // If there are any enemies in range...
-        if (_hasEnemiesInRange)
-        {
-            // Find the current attack target
-            _currentTarget = FindCurrentTarget();
-
-            // DEBUG: highlight the current attack target
-            Debug.DrawLine(transform.position, _currentTarget.transform.position, Color.green);
-
-            // Attack
-            if (_attackTimer <= 0f)
-            {
-                _attackTimer = _attackSpeed;
-                Attack();
-            }
-        }
-    }
-
-    private Enemy FindCurrentTarget()
-    {
-        //Debug.Log($"Target mode: {_targetMode}");
-
-        // Eventually add second condition if multiple enemies are the same strength
-        // Second condition should be who is first
-
-        switch (_targetMode)
-        {
-            // Default is first
-            case TowerTargetMode.Strong:
-                return _enemiesInRange.OrderBy(e => e.Damage).First();
-            case TowerTargetMode.Weak:
-                return _enemiesInRange.OrderByDescending(e => e.Damage).First();
-            case TowerTargetMode.Last:
-                return _enemiesInRange.OrderBy(e => e.PercentAlongPath).First();
-            default:
-                return _enemiesInRange.OrderByDescending(e => e.PercentAlongPath).First();
-        }
-    }
-
-    private void Attack()
-    {
-        //Debug.Log("Attack!");
-        if (_attackType == TowerAttackType.Melee)
-        {
-            // If melee tower:
-            // Remove health from enemy
-            // Play animation/sound
-
-            _currentTarget.DamageEnemy(_attackPower);
-        }
-        else if (_attackType == TowerAttackType.Ranged)
-        {
-            // If ranged tower:
-            // Spawn a projectile prefab
-            // Play animation/sound
-
-            Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.InitializeProjectile(_currentTarget);
-        }
-    }
-
+    
     // Changes the range of the tower
     private void ChangeRange(float range)
     {
-        // Divides by scale x to offset scale applied on collider
-        _rangeCollider.radius = range / transform.localScale.x;
-    }
+        _rangeCollider.radius = range;
 
-    // Changes the target mode of the tower (in a cycle)
-    public void ChangeTargetMode()
-    {
-        int num = (int)_targetMode;
-        num = (num + 1) % Enum.GetNames(typeof(TowerTargetMode)).Length;
-        _targetMode = (TowerTargetMode)num;
+        // Need to double the range for the visual because the sprite works in diameter, not radius
+        _rangeVisual.transform.localScale = new Vector3(_range * 2f, _range * 2f, 1f);
     }
-
+    
+    public void ShowRangeVisual() => _rangeVisual.enabled = true;
+    
+    public void HideRangeVisual() => _rangeVisual.enabled = false;
+    #endregion
+    
     // DEBUG
     void OnDrawGizmos()
     {
-        DrawTowerRange();
+        //DrawTowerRange();
     }
     private void DrawTowerRange()
     {
