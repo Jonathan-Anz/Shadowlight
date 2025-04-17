@@ -33,7 +33,6 @@ public class TextUIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
 
         DontDestroyOnLoad(gameObject);
@@ -59,12 +58,10 @@ public class TextUIManager : MonoBehaviour
     {
         _wavesText.text = $"<b>Wave</b>: {currentWave} / {maxWaves}";
     }
-
     public void UpdateLivesText(int playerLives)
     {
         _livesText.text = $"<b>Lives</b>: {playerLives}";
     }
-
     public void UpdateOrbsText(int playerOrbs)
     {
         _orbsText.text = $"<b>Orbs</b>: {playerOrbs}";

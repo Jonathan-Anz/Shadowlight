@@ -39,7 +39,6 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
 
         _grid = GetComponent<Grid>();
