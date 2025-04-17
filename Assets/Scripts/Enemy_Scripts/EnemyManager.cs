@@ -16,7 +16,6 @@ public class EnemyManager : MonoBehaviour
     public static event Action<int> OnEnemyReachedEnd;
     public static event Action<int> OnEnemyDied;
 
-
     private void Awake()
     {
         // Make sure there is only one instance
