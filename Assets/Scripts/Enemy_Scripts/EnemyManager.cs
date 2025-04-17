@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    // Singleton
+    public static EnemyManager Instance;
+
     // Enemy prefabs
     [SerializeField] private GameObject _testEnemyPrefab;
 
@@ -12,6 +15,18 @@ public class EnemyManager : MonoBehaviour
     // Events
     public static event Action<int> OnEnemyReachedEnd;
     public static event Action<int> OnEnemyDied;
+
+
+    private void Awake()
+    {
+        // Make sure there is only one instance
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
 
     public void SpawnEnemy(Path path)

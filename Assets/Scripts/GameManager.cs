@@ -3,12 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // TODO: Turn all the managers into singletons!
-    // Other managers: set in inspector
-    [Header("Managers")]
-    [SerializeField] private PathManager _pathManager;
-    [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private TextUIManager _textUIManager;
+    // Singleton
+    public static GameManager Instance;
 
     // Player stats
     [Header("Player Stats")]
@@ -21,28 +17,41 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _maxWaves;
     private int _currentWave = 1;
 
+    // Getters
+    public int PlayerLives => _playerLives;
+    public int PlayerOrbs => _playerOrbs;
+    public int CurrentWave => _currentWave;
+
+
     // Initializiation
     private void Awake()
     {
-        // Initialize the path manager
-        _pathManager.InitializePathManager();
+        // Make sure there is only one instance
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
 
         // Set the player lives
         _playerLives = _defaultPlayerLives;
 
+        // Initialize text to UI
+        InitializeUIText();
+    }
+
+    private void Start()
+    {
         // TEMP: Spawn some enemies
         SpawnEnemy();
         Invoke("SpawnEnemy", 0.5f);
         Invoke("SpawnEnemy", 1.5f);
-
-        // Initialize text to UI
-        InstantiateUIText();
     }
-
     // TEMP: Invoke doesn't allow parameters
     private void SpawnEnemy()
     {
-        _enemyManager.SpawnEnemy(_pathManager.ActivePath);
+        EnemyManager.Instance.SpawnEnemy(PathManager.Instance.ActivePath);
     }
 
     // Subscribe functions to events
@@ -57,6 +66,7 @@ public class GameManager : MonoBehaviour
         EnemyManager.OnEnemyDied -= AddOrbs;
     }
 
+    // Update stats
     private void RemoveLives(int damage)
     {
         _playerLives -= damage;
@@ -68,21 +78,24 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player is dead!");
         }
 
-        // Updates the lives text.
-        _textUIManager.UpdateLivesText(_playerLives);
+        // Updates the lives text
+        TextUIManager.Instance.UpdateLivesText(_playerLives);
     }
     private void AddOrbs(int orbs)
     {
         _playerOrbs += orbs;
         //Debug.Log($"Player now has {_playerOrbs} orbs");
-        _textUIManager.UpdateOrbsText(_playerOrbs);
+
+        // Update the orbs text
+        TextUIManager.Instance.UpdateOrbsText(_playerOrbs);
     }
 
     // Puts text within the UI at the start of runtime.
-    private void InstantiateUIText()
+    private void InitializeUIText()
     {
-        _textUIManager.UpdateWavesText(_currentWave, _maxWaves);
-        _textUIManager.UpdateLivesText(_playerLives);
-        _textUIManager.UpdateOrbsText(_playerOrbs);
+        TextUIManager.Instance.UpdateWavesText(_currentWave, _maxWaves);
+        TextUIManager.Instance.UpdateLivesText(_playerLives);
+        TextUIManager.Instance.UpdateOrbsText(_playerOrbs);
     }
+
 }
