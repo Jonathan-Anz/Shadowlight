@@ -12,15 +12,19 @@ public class GameManager : MonoBehaviour
     private int _playerOrbs = 0;
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
 
-    // Waves
-    [Header("Waves")]
-    [SerializeField] private int _maxWaves;
-    private int _currentWave = 1;
+    // Level
+    private int _currentLevel = 0;
+
+    // Waves (Moved to Enemy Manager)
+    //[Header("Waves")]
+    //[SerializeField] private int _maxWaves;
+    //private int _currentWave = 1;
 
     // Getters
     public int PlayerLives => _playerLives;
     public int PlayerOrbs => _playerOrbs;
-    public int CurrentWave => _currentWave;
+    public int CurrentLevel => _currentLevel;
+    //public int CurrentWave => _currentWave;
 
 
     // Initializiation
@@ -41,17 +45,23 @@ public class GameManager : MonoBehaviour
         InitializeUIText();
     }
 
+    // Scenes
+    public void NextLevel()
+    {
+        // TODO: go to next level
+    }
+
     private void Start()
     {
         // TEMP: Spawn some enemies
-        SpawnEnemy();
-        Invoke("SpawnEnemy", 0.5f);
-        Invoke("SpawnEnemy", 1.5f);
+        //SpawnEnemy();
+        //Invoke("SpawnEnemy", 0.5f);
+        //Invoke("SpawnEnemy", 1.5f);
     }
     // TEMP: Invoke doesn't allow parameters
     private void SpawnEnemy()
     {
-        EnemyManager.Instance.SpawnEnemy(PathManager.Instance.ActivePath);
+        //EnemyManager.Instance.SpawnEnemy();
     }
 
     // Subscribe functions to events
@@ -93,7 +103,8 @@ public class GameManager : MonoBehaviour
     // Puts text within the UI at the start of runtime.
     private void InitializeUIText()
     {
-        TextUIManager.Instance.UpdateWavesText(_currentWave, _maxWaves);
+        //TextUIManager.Instance.UpdateWavesText(_currentWave, _maxWaves);
+        TextUIManager.Instance.UpdateWavesText(EnemyManager.Instance.CurrentWave, EnemyManager.Instance.MaxWaves);
         TextUIManager.Instance.UpdateLivesText(_playerLives);
         TextUIManager.Instance.UpdateOrbsText(_playerOrbs);
     }

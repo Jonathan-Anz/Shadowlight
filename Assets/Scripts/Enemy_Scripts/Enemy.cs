@@ -9,14 +9,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _damage;
     [SerializeField] private int _orbAmount;
 
-    // Each enemy has a reference to the enemy manager
-    private EnemyManager _enemyManager = null;
-
     // Each enemy needs a path to follow
     private Path _path = null;
     private int _pathPointIndex = 0;
     private float _distanceTraveled = 0f;
     private float _percentAlongPath = 0f;
+
+    // Death
+    private bool _hasDied = false;
 
     // Getters
     public string Name => _name;
@@ -28,13 +28,12 @@ public class Enemy : MonoBehaviour
 
 
     // Call this method when an enemy is spawned
-    public void InitializeEnemy(EnemyManager em, Path path)
+    public void InitializeEnemy()
     {
-        // Set this enemy's manager
-        _enemyManager = em;
+        _hasDied = false;
 
         // Set this enemy's path
-        _path = path;
+        _path = PathManager.Instance.ActivePath;
 
         // Place the enemy at the start of the path
         // Eventually allow enemies to be placed further along the path?
@@ -85,7 +84,7 @@ public class Enemy : MonoBehaviour
             if (_percentAlongPath >= 0.999f)
             {
                 //Debug.Log($"Enemy: ({_name}) reached the end!");
-                _enemyManager.EnemyReachedEndOfPath(this);
+                EnemyManager.Instance.EnemyReachedEndOfPath(this);
             }
         }
     }
@@ -93,10 +92,12 @@ public class Enemy : MonoBehaviour
     public void DamageEnemy(int damage)
     {
         _health -= damage;
-        if (_health <= 0)
+        if (!_hasDied && _health <= 0)
         {
+            _hasDied = true;
+
             //Debug.Log("Enemy died!");
-            _enemyManager.EnemyDied(this);
+            EnemyManager.Instance.EnemyDied(this);
         }
     }
 
