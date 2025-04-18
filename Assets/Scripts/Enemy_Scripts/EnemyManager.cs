@@ -27,6 +27,11 @@ public class EnemyManager : MonoBehaviour
     public static event Action<int> OnEnemyReachedEnd;
     public static event Action<int> OnEnemyDied;
 
+    // Getters
+    public int CurrentWave => _currentWave;
+    // Get the current level's max number of waves
+    public int MaxWaves => _waveSpawner.GetLevelWaves(GameManager.Instance.CurrentLevel).Length;
+
 
     private void Awake()
     {
