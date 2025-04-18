@@ -6,6 +6,10 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private float _minSpawnVariation = 0.25f;
     [SerializeField] private float _maxSpawnVariation = 1f;
     [SerializeField] private Wave[] _sampleSceneWaves;
+    private bool _spawnedAllEnemies = false;
+
+    // Getters
+    public bool SpawnedAllEnemies => _spawnedAllEnemies;
 
     private void Start()
     {
@@ -27,14 +31,18 @@ public class WaveSpawner : MonoBehaviour
     public void StartWave(Wave wave) => StartCoroutine(SpawnWave(wave));
     private IEnumerator SpawnWave(Wave wave)
     {
+        _spawnedAllEnemies = false;
+
         for (int i = 0; i < wave.Enemies.Length; i++)
         {
-            //Debug.Log($"Spawning: {wave.Enemies[i]}");
-
-            EnemyManager.Instance.SpawnEnemy(wave.Enemies[i]);
-
             yield return new WaitForSeconds(Random.Range(_minSpawnVariation, _maxSpawnVariation));
+
+            //Debug.Log($"Spawning: {wave.Enemies[i]}");
+            EnemyManager.Instance.SpawnEnemy(wave.Enemies[i]);
         }
+
+        _spawnedAllEnemies = true;
+        //Debug.Log($"Spawned all enemies");
     }
 }
 

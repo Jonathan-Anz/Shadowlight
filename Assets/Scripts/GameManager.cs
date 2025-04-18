@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour
         InitializeUIText();
     }
 
+    // Scenes
+    public void NextLevel()
+    {
+        // TODO: go to next level
+    }
+
     private void Start()
     {
         // TEMP: Spawn some enemies

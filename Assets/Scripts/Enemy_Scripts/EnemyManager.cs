@@ -51,7 +51,16 @@ public class EnemyManager : MonoBehaviour
     // Waves
     public void StartWave()
     {
+        // Do nothing if wave already started
         if (_waveStarted) return;
+
+        // Check if there are no more waves
+        if (_currentWave >= MaxWaves)
+        {
+            Debug.Log($"Finished level");
+            GameManager.Instance.NextLevel();
+            return;
+        }
 
         _waveStarted = true;
 
@@ -65,7 +74,14 @@ public class EnemyManager : MonoBehaviour
         _waveSpawner.StartWave(wave);
 
         // Update the UI
-        TextUIManager.Instance.UpdateWavesText(EnemyManager.Instance.CurrentWave, EnemyManager.Instance.MaxWaves);
+        TextUIManager.Instance.HideNextButton();
+        TextUIManager.Instance.UpdateWavesText(_currentWave, MaxWaves);
+    }
+    private void EndWave()
+    {
+        _waveStarted = false;
+
+        TextUIManager.Instance.ShowNextButton();
     }
 
     public void SpawnEnemy(EnemyType type)
@@ -75,7 +91,7 @@ public class EnemyManager : MonoBehaviour
                                             Quaternion.identity)
                             .GetComponent<Enemy>();
 
-        spawnedEnemy.InitializeEnemy(this, PathManager.Instance.ActivePath);
+        spawnedEnemy.InitializeEnemy();
         _enemyList.Add(spawnedEnemy);
     }
 
@@ -110,6 +126,13 @@ public class EnemyManager : MonoBehaviour
 
         _enemyList.Remove(enemy);
         Destroy(enemy.gameObject);
+
+        // Check if the wave is over
+        if (_waveSpawner.SpawnedAllEnemies && _enemyList.Count == 0)
+        {
+            Debug.Log($"Wave {_currentWave} finished");
+            EndWave();
+        }
     }
 
 }

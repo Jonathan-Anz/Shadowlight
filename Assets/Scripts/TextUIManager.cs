@@ -13,6 +13,7 @@ public class TextUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _livesText;
     [SerializeField] private TextMeshProUGUI _orbsText;
     [SerializeField] private TextMeshProUGUI _wavesText;
+    [SerializeField] private GameObject _nextButton;
 
     [Header("Tower Panels")]
     [SerializeField] private GameObject _towerPanels;
@@ -37,6 +38,9 @@ public class TextUIManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+
+    public void ShowNextButton() => _nextButton.SetActive(true);
+    public void HideNextButton() => _nextButton.SetActive(false);
 
     // Tower Panels
     public void ShowTowerPanels() => _towerPanels.SetActive(true);
