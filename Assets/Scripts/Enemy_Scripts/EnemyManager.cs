@@ -20,8 +20,10 @@ public class EnemyManager : MonoBehaviour
 
     // Waves
     private WaveSpawner _waveSpawner;
+    private Wave[] _currentLevelWaves;
     private int _currentWave = 0;
     private bool _waveStarted = false;
+    private bool _finishedLevel = false;
 
     // Events
     public static event Action<int> OnEnemyReachedEnd;
@@ -30,59 +32,63 @@ public class EnemyManager : MonoBehaviour
     // Getters
     public int CurrentWave => _currentWave;
     // Get the current level's max number of waves
-    public int MaxWaves => _waveSpawner.GetLevelWaves(GameManager.Instance.CurrentLevel).Length;
+    public int MaxWaves => _currentLevelWaves.Length;
+    public bool FinishedLevel => _finishedLevel;
 
 
     private void Awake()
     {
         // Make sure there is only one instance
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance != null) Destroy(gameObject);
+        else Instance = this;
 
         _waveSpawner = GetComponent<WaveSpawner>();
+    }
 
-        _currentWave = 0;
+    // Call everytime a level is loaded
+    public void ResetWaves()
+    {
+        _currentWave = 1;
+        _waveStarted = false;
+        _currentLevelWaves = _waveSpawner.GetLevelWaves(LevelManager.Instance.CurrentLevel);
+        _finishedLevel = false;
+
+        // Update UI
+        TextUIManager.Instance.ToggleNextButton(true);
+        TextUIManager.Instance.UpdateWavesText(_currentWave, MaxWaves);
     }
 
     // Waves
-    public void StartWave()
+    public void StartNextWave()
     {
         // Do nothing if wave already started
         if (_waveStarted) return;
 
-        // Check if there are no more waves
-        if (_currentWave >= MaxWaves)
-        {
-            Debug.Log($"Finished level");
-            GameManager.Instance.NextLevel();
-            return;
-        }
-
         _waveStarted = true;
 
-        // Increment the current wave number
-        _currentWave++;
-
-        // Get the wave based on the level and the current wave number
         // Decrement currentWave by one to account for arrays starting from 0
-        Wave wave = _waveSpawner.GetLevelWaves(GameManager.Instance.CurrentLevel)[CurrentWave - 1];
+        Wave wave = _currentLevelWaves[_currentWave - 1];
 
         _waveSpawner.StartWave(wave);
 
         // Update the UI
-        TextUIManager.Instance.HideNextButton();
-        TextUIManager.Instance.UpdateWavesText(_currentWave, MaxWaves);
+        TextUIManager.Instance.ToggleNextButton(false);
     }
     private void EndWave()
     {
         _waveStarted = false;
 
-        TextUIManager.Instance.ShowNextButton();
+        // Check if all the waves are complete
+        if (_currentWave == _currentLevelWaves.Length)
+        {
+            _finishedLevel = true;
+        }
+
+        _currentWave++;
+
+        // Update the UI
+        TextUIManager.Instance.ToggleNextButton(true);
+        TextUIManager.Instance.UpdateWavesText(_currentWave, MaxWaves);
     }
 
     public void SpawnEnemy(EnemyType type)
@@ -117,6 +123,8 @@ public class EnemyManager : MonoBehaviour
         // Remove enemy from the enemy list and destroy it
         _enemyList.Remove(enemy);
         Destroy(enemy.gameObject);
+
+        CheckEndOfWave();
     }
 
     // Enemies that die will call this function
@@ -128,6 +136,12 @@ public class EnemyManager : MonoBehaviour
         _enemyList.Remove(enemy);
         Destroy(enemy.gameObject);
 
+        CheckEndOfWave();
+    }
+
+    // Checks if a wave is over
+    private void CheckEndOfWave()
+    {
         // Check if the wave is over
         if (_waveSpawner.SpawnedAllEnemies && _enemyList.Count == 0)
         {

@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour
 
             // Check if the enemy reached the end of the path
             // Use 0.999 to allow some room for error
-            if (_percentAlongPath >= 0.999f)
+            if (_percentAlongPath >= 0.98f)
             {
                 //Debug.Log($"Enemy: ({_name}) reached the end!");
                 EnemyManager.Instance.EnemyReachedEndOfPath(this);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -34,13 +35,8 @@ public class GridManager : MonoBehaviour
     private void Awake()
     {
         // Make sure there is only one instance
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance != null) Destroy(gameObject);
+        else Instance = this;
 
         _grid = GetComponent<Grid>();
     }
@@ -83,10 +79,10 @@ public class GridManager : MonoBehaviour
         if (_selectedTower != null)
         {
             // Disable the tower panels
-            TextUIManager.Instance.HideTowerPanels();
+            TextUIManager.Instance.ToggleTowerPanels(false);
 
             // Enable the tower info panel
-            TextUIManager.Instance.ShowTowerInfo();
+            TextUIManager.Instance.ToggleTowerInfo(true);
 
             //Debug.Log(tower.name);
             TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
@@ -97,10 +93,10 @@ public class GridManager : MonoBehaviour
         else
         {
             // Disable the tower info panel
-            TextUIManager.Instance.HideTowerInfo();
+            TextUIManager.Instance.ToggleTowerInfo(false);
 
             // Enable the tower panels
-            TextUIManager.Instance.ShowTowerPanels();
+            TextUIManager.Instance.ToggleTowerPanels(true);
         }
     }
 
@@ -145,6 +141,21 @@ public class GridManager : MonoBehaviour
 
         // Update the UI again
         TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
+    }
+
+    public void ClearGrid()
+    {
+        // Delete all the towers from the game and dictionary
+        Tower[] towers = _towerTiles.Values.ToArray();
+        _towerTiles.Clear();
+
+        foreach (Tower tower in towers)
+        {
+            Destroy(tower.gameObject);
+        }
+
+        // Mark all the tiles as valid
+        _invalidTiles.Clear();
     }
 
     public void HighlightGridVisual(bool value) => _gridVisual.enabled = value;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class TextUIManager : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class TextUIManager : MonoBehaviour
 
     // UI
     [Header("UI")]
-    [SerializeField] private GameObject _UI;
     [SerializeField] private TextMeshProUGUI _livesText;
     [SerializeField] private TextMeshProUGUI _orbsText;
     [SerializeField] private TextMeshProUGUI _wavesText;
@@ -31,29 +31,19 @@ public class TextUIManager : MonoBehaviour
     private void Awake()
     {
         // Make sure there is only one instance
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad(_UI);
+        if (Instance != null) Destroy(gameObject);
+        else Instance = this;
     }
 
     // UI
-    public void ShowNextButton() => _nextButton.SetActive(true);
-    public void HideNextButton() => _nextButton.SetActive(false);
-    public void ShowPauseMenu() => _pauseMenu.SetActive(true);
-    public void HidePauseMenu() => _pauseMenu.SetActive(false);
+    public void ToggleNextButton(bool value) => _nextButton.SetActive(value);
+    public void TogglePauseMenu(bool value) => _pauseMenu.SetActive(value);
 
     // Tower Panels
-    public void ShowTowerPanels() => _towerPanels.SetActive(true);
-    public void HideTowerPanels() => _towerPanels.SetActive(false);
+    public void ToggleTowerPanels(bool value) => _towerPanels.SetActive(value);
 
     // Tower Info
-    public void ShowTowerInfo() => _towerInfoPanel.SetActive(true);
-    public void HideTowerInfo() => _towerInfoPanel.SetActive(false);
+    public void ToggleTowerInfo(bool value) => _towerInfoPanel.SetActive(value);
     public void UpdateTowerInfo(Tower tower)
     {
         _nameText.text = $"Name: {tower.Name}";
@@ -65,7 +55,14 @@ public class TextUIManager : MonoBehaviour
 
     public void UpdateWavesText(int currentWave, int maxWaves)
     {
-        _wavesText.text = $"<b>Wave</b>: {currentWave} / {maxWaves}";
+        if (currentWave > maxWaves)
+        {
+            _wavesText.text = $"<b>Level Complete!<b>";
+        }
+        else
+        {
+            _wavesText.text = $"<b>Wave</b>: {currentWave} / {maxWaves}";
+        }   
     }
     public void UpdateLivesText(int playerLives)
     {

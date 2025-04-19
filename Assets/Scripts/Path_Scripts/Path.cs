@@ -5,7 +5,7 @@ public class Path : MonoBehaviour
 {
     // Path properties
     [SerializeField] private Transform[] _points; // Set in inspector
-    [SerializeField, Range(0f, 5f)] private float _pathRadius; // Set in inspector
+    [SerializeField, Range(0f, 5f)] private float _pathWidth; // Set in inspector
     [SerializeField] private int _pathCheckDistance = 15; // Set in inspector
     private float _totalPathDistance;
     private LineRenderer _lineRenderer;
@@ -17,7 +17,7 @@ public class Path : MonoBehaviour
 
     // Getters
     public Transform[] Points => _points;
-    public float PathRadius => _pathRadius;
+    public float PathWidth => _pathWidth;
     public float TotalPathDistance => _totalPathDistance;
 
 
@@ -49,6 +49,7 @@ public class Path : MonoBehaviour
     {
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.positionCount = _points.Length;
+        _lineRenderer.widthMultiplier = _pathWidth;
 
         // Sets the vertices of the line from the path points
         for (int i = 0; i < _points.Length; i++)
@@ -79,7 +80,7 @@ public class Path : MonoBehaviour
     // DEBUG
     private void OnDrawGizmos()
     {
-        if (_drawPath)
+        if (!Application.isPlaying && _drawPath)
         {
             Gizmos.color = _pathColor;
 
@@ -93,7 +94,7 @@ public class Path : MonoBehaviour
         for (int i = 0; i < _points.Length; i++)
         {
             // Draw sphere at each point
-            Gizmos.DrawWireSphere(_points[i].position, _pathRadius);
+            Gizmos.DrawWireSphere(_points[i].position, _pathWidth * 0.5f);
 
             // Draw line segments connecting each point
             // Exclude the last point
@@ -109,8 +110,8 @@ public class Path : MonoBehaviour
                 Vector3 rightDir = Vector3.Cross(forwardDir, Vector3.forward);
 
                 // Get left and right positions
-                Vector3 left = _points[i].position + (-rightDir * _pathRadius);
-                Vector3 right = _points[i].position + (rightDir * _pathRadius);
+                Vector3 left = _points[i].position + (-rightDir * _pathWidth * 0.5f);
+                Vector3 right = _points[i].position + (rightDir * _pathWidth * 0.5f);
 
                 // Draw the lines that connect the points
                 Gizmos.DrawRay(left, forwardDir * dist);

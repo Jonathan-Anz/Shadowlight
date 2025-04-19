@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,45 +14,45 @@ public class GameManager : MonoBehaviour
     private int _playerOrbs = 0;
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
 
-    // Level
+    // Game
     private bool _isPaused = false;
-    private int _currentLevel = 0;
-
-    // Waves (Moved to Enemy Manager)
-    //[Header("Waves")]
-    //[SerializeField] private int _maxWaves;
-    //private int _currentWave = 1;
 
     // Getters
     public int PlayerLives => _playerLives;
     public int PlayerOrbs => _playerOrbs;
-    public int CurrentLevel => _currentLevel;
-    //public int CurrentWave => _currentWave;
 
 
     // Initializiation
     private void Awake()
     {
         // Make sure there is only one instance
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance != null) Destroy(gameObject);
+        else Instance = this;
 
         // Set the player lives
         _playerLives = _defaultPlayerLives;
-
-        // Initialize text to UI
-        InitializeUIText();
     }
 
-    // Scenes
-    public void NextLevel()
+    private void Start()
     {
-        // TODO: go to next level
+        // TEMP: Load a level for the first time
+        // Eventually change to load from saved game data
+        LevelManager.Instance.LoadLevel(Levels.TestLevel);
+    }
+
+    public void NextButton()
+    {
+        if (EnemyManager.Instance.FinishedLevel)
+        {
+            // TEMP: Go to the next level
+            // Add shop menu/scene in between?
+            LevelManager.Instance.LoadLevel(LevelManager.Instance.GetNextLevel());
+        }
+        else
+        {
+            // Start the next wave
+            EnemyManager.Instance.StartNextWave();
+        }
     }
 
     // Game
@@ -62,34 +64,26 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             //Debug.Log("Game paused");
-
-            TextUIManager.Instance.ShowPauseMenu();
         }
         else
         {
             Time.timeScale = 1f;
             //Debug.Log("Game resumed");
-
-            TextUIManager.Instance.HidePauseMenu();
         }
+
+        TextUIManager.Instance.TogglePauseMenu(_isPaused);
     }
     public void ExitToTitleScreen()
     {
-        Debug.Log("Exit to title screen");
+        //Debug.Log("Exit to title screen");
+
+        // Make sure the game is unpaused
+        _isPaused = false;
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("TitleScene");
     }
 
-    private void Start()
-    {
-        // TEMP: Spawn some enemies
-        //SpawnEnemy();
-        //Invoke("SpawnEnemy", 0.5f);
-        //Invoke("SpawnEnemy", 1.5f);
-    }
-    // TEMP: Invoke doesn't allow parameters
-    private void SpawnEnemy()
-    {
-        //EnemyManager.Instance.SpawnEnemy();
-    }
 
     // Subscribe functions to events
     private void OnEnable()
@@ -112,6 +106,8 @@ public class GameManager : MonoBehaviour
         // Check if the player is out of lives
         if (_playerLives <= 0)
         {
+            _playerLives = 0;
+
             Debug.Log("Player is dead!");
         }
 
