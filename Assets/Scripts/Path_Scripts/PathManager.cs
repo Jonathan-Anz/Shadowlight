@@ -29,6 +29,7 @@ public class PathManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         // Set the active path and initialize it
         _activePath = _testPath;

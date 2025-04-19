@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
 
     // Level
+    private bool _isPaused = false;
     private int _currentLevel = 0;
 
     // Waves (Moved to Enemy Manager)
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         // Set the player lives
         _playerLives = _defaultPlayerLives;
@@ -49,6 +51,31 @@ public class GameManager : MonoBehaviour
     public void NextLevel()
     {
         // TODO: go to next level
+    }
+
+    // Game
+    public void PauseGame()
+    {
+        _isPaused = !_isPaused;
+
+        if (_isPaused)
+        {
+            Time.timeScale = 0f;
+            //Debug.Log("Game paused");
+
+            TextUIManager.Instance.ShowPauseMenu();
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            //Debug.Log("Game resumed");
+
+            TextUIManager.Instance.HidePauseMenu();
+        }
+    }
+    public void ExitToTitleScreen()
+    {
+        Debug.Log("Exit to title screen");
     }
 
     private void Start()

@@ -40,10 +40,9 @@ public class GridManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         _grid = GetComponent<Grid>();
-
-        DontDestroyOnLoad(gameObject);
     }
 
     public void CheckForPathTiles(int pathCheckDistance)
