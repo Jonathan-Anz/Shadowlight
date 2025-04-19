@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum Levels
@@ -10,12 +11,19 @@ public class LevelManager : MonoBehaviour
     // Singleton
     public static LevelManager Instance;
 
+    // Level cycle
+    private Levels _currentLevel;
+
     // Level gameobjects (maybe use array instead?)
-    private GameObject _currentLevel;
+    private GameObject _currentLevelObject;
     [SerializeField] private GameObject _testLevel;
     [SerializeField] private GameObject _darkForestLevel;
     [SerializeField] private GameObject _mushroomForestLevel;
     [SerializeField] private GameObject _snowyForestLevel;
+
+    // Getters
+    public Levels CurrentLevel => _currentLevel;
+
 
     private void Awake()
     {
@@ -45,16 +53,49 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log($"Loading {level} level...");
 
-        // Disable the current loaded level
-        _currentLevel?.SetActive(false);
+        // TODO: Add level transition (fade to black?)
 
-        // Set the current level
-        _currentLevel = LevelToGameObject(level);
+        // Clear the placed towers
+        GridManager.Instance.ClearGrid();
+
+        // Disable the current loaded level
+        _currentLevelObject?.SetActive(false);
+
+        // Set the new level as the current one
+        _currentLevel = level;
+        _currentLevelObject = LevelToGameObject(level);
 
         // Enable the new level
-        _currentLevel.SetActive(true);
+        _currentLevelObject.SetActive(true);
 
-        // Enable the path for that level
+        // Enable the path for the new level
         PathManager.Instance.SetPath(level);
+
+        // Reset the waves for the new level
+        EnemyManager.Instance.ResetWaves();
+
+        // Update the UI
+        TextUIManager.Instance.UpdateLivesText(GameManager.Instance.PlayerLives);
+        TextUIManager.Instance.UpdateOrbsText(GameManager.Instance.PlayerOrbs);
+
+        // TODO: Add level transition (fade from black?)
+    }
+
+    public Levels GetNextLevel()
+    {
+        int index = (int)_currentLevel;
+
+        index++;
+
+        if (index >= Enum.GetNames(typeof(Levels)).Length)
+        {
+            // Finished all levels
+            
+            // TODO: Trigger "player wins" event and go back to title screen
+
+            index = 0;
+        }
+
+        return (Levels)index;
     }
 }

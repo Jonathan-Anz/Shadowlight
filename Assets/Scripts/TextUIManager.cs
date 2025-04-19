@@ -55,7 +55,14 @@ public class TextUIManager : MonoBehaviour
 
     public void UpdateWavesText(int currentWave, int maxWaves)
     {
-        _wavesText.text = $"<b>Wave</b>: {currentWave} / {maxWaves}";
+        if (currentWave > maxWaves)
+        {
+            _wavesText.text = $"<b>Level Complete!<b>";
+        }
+        else
+        {
+            _wavesText.text = $"<b>Wave</b>: {currentWave} / {maxWaves}";
+        }   
     }
     public void UpdateLivesText(int playerLives)
     {

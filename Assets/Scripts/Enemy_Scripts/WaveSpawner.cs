@@ -5,26 +5,23 @@ public class WaveSpawner : MonoBehaviour
 {
     [SerializeField] private float _minSpawnVariation = 0.25f;
     [SerializeField] private float _maxSpawnVariation = 1f;
-    [SerializeField] private Wave[] _sampleSceneWaves;
+    [SerializeField] private Wave[] _testLevelWaves;
     [SerializeField] private Wave[] _darkForestWaves;
+    [SerializeField] private Wave[] _mushroomForestWaves;
+    [SerializeField] private Wave[] _snowyForestWaves;
     private bool _spawnedAllEnemies = false;
 
     // Getters
     public bool SpawnedAllEnemies => _spawnedAllEnemies;
 
-    private void Start()
+    public Wave[] GetLevelWaves(Levels currentLevel)
     {
-        //StartCoroutine(SpawnWave(_sampleSceneWaves[0]));   
-    }
-
-    public Wave[] GetLevelWaves(int currentLevel)
-    {
-        // Eventually add real levels and waves
         switch (currentLevel)
         {
-            case 0: return _sampleSceneWaves;
-            case 1: return _darkForestWaves;
-            default: return _sampleSceneWaves;
+            case Levels.DarkForest: return _darkForestWaves;
+            case Levels.MushroomForest: return _mushroomForestWaves;
+            case Levels.SnowyForest: return _snowyForestWaves;
+            default: return _testLevelWaves;
         }
     }
 

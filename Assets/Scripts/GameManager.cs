@@ -14,23 +14,12 @@ public class GameManager : MonoBehaviour
     private int _playerOrbs = 0;
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
 
-    // Levels
-    private int _currentLevel = 0;
-    private Levels currentLevel;
-
     // Game
     private bool _isPaused = false;
-
-    // Waves (Moved to Enemy Manager)
-    //[Header("Waves")]
-    //[SerializeField] private int _maxWaves;
-    //private int _currentWave = 1;
 
     // Getters
     public int PlayerLives => _playerLives;
     public int PlayerOrbs => _playerOrbs;
-    public int CurrentLevel => _currentLevel;
-    //public int CurrentWave => _currentWave;
 
 
     // Initializiation
@@ -42,9 +31,6 @@ public class GameManager : MonoBehaviour
 
         // Set the player lives
         _playerLives = _defaultPlayerLives;
-
-        // Initialize text to UI
-        //InitializeUIText();
     }
 
     private void Start()
@@ -54,69 +40,19 @@ public class GameManager : MonoBehaviour
         LevelManager.Instance.LoadLevel(Levels.TestLevel);
     }
 
-    // Scenes
-    // private Levels GetCurrentLevel(string sceneName)
-    // {
-    //     if (Enum.TryParse(sceneName, out Levels level))
-    //     {
-    //         return level;
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning($"Could not match scene name {sceneName} to Levels enum!");
-    //         return Levels.TitleScreen;
-    //     }
-
-    // }
-    public void NextLevel()
+    public void NextButton()
     {
-        _currentLevel++;
-        string levelToLoad = LevelToSceneName(_currentLevel);
-        Debug.Log($"Loading {levelToLoad}...");
-        SceneManager.LoadScene(levelToLoad);
-    }
-    private string LevelToSceneName(int currentLevel)
-    {
-        Levels level = (Levels)currentLevel;
-        return level.ToString();
-    }
-    // Called when a level is loaded
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        //Debug.Log($"Loaded {scene.name}");
-
-        // Figure out the current level
-        //currentLevel = GetCurrentLevel(scene.name);
-
-        // When a new level is loaded...
-        // if (scene.name == Levels.TitleScreen.ToString())
-        // {
-        //     // If it's the title screen
-        //     //Debug.Log("Title Screen!");
-
-        //     // Show the title canvas
-        //     TextUIManager.Instance.ToggleTitleCanvas(true);
-
-        //     // Hide the game canvas
-        //     TextUIManager.Instance.ToggleGameCanvas(false);
-        // }
-        // else
-        // {
-        //     // If it's a game level
-        //     //Debug.Log("Game Level!");
-
-        //     // Find and activate the path for the level
-        //     PathManager.Instance.SetPath();
-
-        //     // Reset the waves
-        //     EnemyManager.Instance.ResetWaves();
-
-        //     // Show the game canvas
-        //     TextUIManager.Instance.ToggleGameCanvas(true);
-
-        //     // Hide the title canvas
-        //     TextUIManager.Instance.ToggleTitleCanvas(false);
-        // }
+        if (EnemyManager.Instance.FinishedLevel)
+        {
+            // TEMP: Go to the next level
+            // Add shop menu/scene in between?
+            LevelManager.Instance.LoadLevel(LevelManager.Instance.GetNextLevel());
+        }
+        else
+        {
+            // Start the next wave
+            EnemyManager.Instance.StartNextWave();
+        }
     }
 
     // Game
@@ -140,6 +76,10 @@ public class GameManager : MonoBehaviour
     public void ExitToTitleScreen()
     {
         //Debug.Log("Exit to title screen");
+
+        // Make sure the game is unpaused
+        _isPaused = false;
+        Time.timeScale = 1f;
 
         SceneManager.LoadScene("TitleScene");
     }
@@ -166,6 +106,8 @@ public class GameManager : MonoBehaviour
         // Check if the player is out of lives
         if (_playerLives <= 0)
         {
+            _playerLives = 0;
+
             Debug.Log("Player is dead!");
         }
 

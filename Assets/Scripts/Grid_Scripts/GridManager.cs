@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -140,6 +141,21 @@ public class GridManager : MonoBehaviour
 
         // Update the UI again
         TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
+    }
+
+    public void ClearGrid()
+    {
+        // Delete all the towers from the game and dictionary
+        Tower[] towers = _towerTiles.Values.ToArray();
+        _towerTiles.Clear();
+
+        foreach (Tower tower in towers)
+        {
+            Destroy(tower.gameObject);
+        }
+
+        // Mark all the tiles as valid
+        _invalidTiles.Clear();
     }
 
     public void HighlightGridVisual(bool value) => _gridVisual.enabled = value;
