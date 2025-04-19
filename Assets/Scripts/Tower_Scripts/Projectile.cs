@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 public enum ProjectileMovementType
 {
@@ -12,7 +11,7 @@ public class Projectile : MonoBehaviour
 {
     // Projectile properties: set in inspector
     [SerializeField] private ProjectileMovementType _movementType;
-    [SerializeField] private int _damage;
+    private int _damage; // Damage is inherited from the tower stats
     [SerializeField] private float _speed;
     [SerializeField] private int _pierce;
     [SerializeField] private float _lifetime;
@@ -23,9 +22,10 @@ public class Projectile : MonoBehaviour
 
 
     // Initializer (call when the projectile is spawned)
-    public void InitializeProjectile(Enemy target)
+    public void InitializeProjectile(Enemy target, int damage)
     {
         _target = target;
+        _damage = damage;
 
         // If this is a straightline projectile, set its movement direction
         if (_movementType == ProjectileMovementType.StraightLine)

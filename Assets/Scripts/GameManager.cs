@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private int _playerLives = 0;
     private int _playerOrbs = 0;
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
+    [SerializeField] private int _defaultPlayerOrbs; // Set in inspector
 
     // Game
     private bool _isPaused = false;
@@ -28,34 +29,27 @@ public class GameManager : MonoBehaviour
         // Make sure there is only one instance
         if (Instance != null) Destroy(gameObject);
         else Instance = this;
-
-        // Set the player lives
-        _playerLives = _defaultPlayerLives;
     }
 
     private void Start()
     {
         // TEMP: Load a level for the first time
         // Eventually change to load from saved game data
-        LevelManager.Instance.LoadLevel(Levels.TestLevel);
+        StartNewGame();
     }
 
-    public void NextButton()
-    {
-        if (EnemyManager.Instance.FinishedLevel)
-        {
-            // TEMP: Go to the next level
-            // Add shop menu/scene in between?
-            LevelManager.Instance.LoadLevel(LevelManager.Instance.GetNextLevel());
-        }
-        else
-        {
-            // Start the next wave
-            EnemyManager.Instance.StartNextWave();
-        }
-    }
 
     // Game
+    public void StartNewGame()
+    {
+        // Set the player stats
+        _playerLives = _defaultPlayerLives;
+        _playerOrbs = _defaultPlayerOrbs;
+
+        // Load the first level
+        // TEMP: Change to dark forest
+        LevelManager.Instance.LoadLevel(Levels.TestLevel);
+    }
     public void PauseGame()
     {
         _isPaused = !_isPaused;
@@ -82,6 +76,21 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 
         SceneManager.LoadScene("TitleScene");
+    }
+
+    public void NextButton()
+    {
+        if (EnemyManager.Instance.FinishedLevel)
+        {
+            // TEMP: Go to the next level
+            // Add shop menu/scene in between?
+            LevelManager.Instance.LoadLevel(LevelManager.Instance.GetNextLevel());
+        }
+        else
+        {
+            // Start the next wave
+            EnemyManager.Instance.StartNextWave();
+        }
     }
 
 
@@ -114,7 +123,7 @@ public class GameManager : MonoBehaviour
         // Updates the lives text
         TextUIManager.Instance.UpdateLivesText(_playerLives);
     }
-    private void AddOrbs(int orbs)
+    public void AddOrbs(int orbs)
     {
         _playerOrbs += orbs;
         //Debug.Log($"Player now has {_playerOrbs} orbs");
