@@ -10,10 +10,12 @@ public class TextUIManager : MonoBehaviour
 
     // UI
     [Header("UI")]
+    [SerializeField] private GameObject _UI;
     [SerializeField] private TextMeshProUGUI _livesText;
     [SerializeField] private TextMeshProUGUI _orbsText;
     [SerializeField] private TextMeshProUGUI _wavesText;
     [SerializeField] private GameObject _nextButton;
+    [SerializeField] private GameObject _pauseMenu;
 
     [Header("Tower Panels")]
     [SerializeField] private GameObject _towerPanels;
@@ -35,12 +37,15 @@ public class TextUIManager : MonoBehaviour
             return;
         }
         Instance = this;
-
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(_UI);
     }
 
+    // UI
     public void ShowNextButton() => _nextButton.SetActive(true);
     public void HideNextButton() => _nextButton.SetActive(false);
+    public void ShowPauseMenu() => _pauseMenu.SetActive(true);
+    public void HidePauseMenu() => _pauseMenu.SetActive(false);
 
     // Tower Panels
     public void ShowTowerPanels() => _towerPanels.SetActive(true);

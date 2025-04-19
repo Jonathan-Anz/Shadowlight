@@ -42,6 +42,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         _waveSpawner = GetComponent<WaveSpawner>();
 
