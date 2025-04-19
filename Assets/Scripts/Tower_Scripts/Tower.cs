@@ -17,14 +17,17 @@ public class Tower : MonoBehaviour
     // Tower properties: set in inspector
     [SerializeField] private string _name;
     [SerializeField] private float _range;
-    [SerializeField] private SpriteRenderer _rangeVisual;
-    [SerializeField] private float _attackSpeed;
-    [SerializeField] private TowerTargetMode _targetMode;
-    [SerializeField] private TowerAttackType _attackType;
-    [Header("Melee Properties")]
     [SerializeField] private int _attackPower;
-    [Header("Ranged Properties")]
+    [SerializeField] private float _attackSpeed;
+    [SerializeField] private TowerAttackType _attackType;
+    private TowerTargetMode _targetMode = TowerTargetMode.First;
+
+    [Header("Projectile (Only used if tower is ranged)")]
     [SerializeField] private GameObject _projectilePrefab;
+
+    [Header("Visuals")]
+    [SerializeField] private SpriteRenderer _towerVisual;
+    [SerializeField] private SpriteRenderer _rangeVisual;
 
 
     // Each tower has a list of enemies in its range
@@ -44,6 +47,7 @@ public class Tower : MonoBehaviour
     public int AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
     public TowerTargetMode TargetMode => _targetMode;
+    public Sprite TowerVisual => _towerVisual.sprite;
 
 
     // Call when spawning in the tower
@@ -134,7 +138,7 @@ public class Tower : MonoBehaviour
             // Play animation/sound
 
             Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.InitializeProjectile(_currentTarget);
+            projectile.InitializeProjectile(_currentTarget, _attackPower);
         }
     }
     #endregion

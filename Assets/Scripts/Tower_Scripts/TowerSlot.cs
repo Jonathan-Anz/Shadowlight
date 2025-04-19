@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     // Tower to create
-    [SerializeField] private Object _towerPrefab;
+    [SerializeField] private GameObject _towerPrefab;
+    [SerializeField] private GameObject _towerImage;
+    [SerializeField] private TextMeshProUGUI _orbCostText;
+    [SerializeField] private int _orbCost;
 
     // Temporary, will need to get this somewhere
     //[SerializeField] private float _tileSize = 1;
@@ -15,22 +20,29 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private TowerSlotManager _towerSlotManager;
     private Vector3 _startPos;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        InitializeTowerSlot();
+        // Set the orb cost text
+        _orbCostText.text = _orbCost.ToString();
+
+        // Not needed?
+        //InitializeTowerSlot();
     }
 
     private void InitializeTowerSlot()
     {
         _towerSlotManager = GetComponentInParent<TowerSlotManager>();
-        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // Check if the player has enough orbs
+        if (GameManager.Instance.PlayerOrbs < _orbCost) return;
+
         // Stores position to restore it after dragging.
-        _startPos = transform.position;
+        //_startPos = transform.position;
+        _startPos = _towerImage.transform.position;
 
         // TODO: hide the UI?
 
@@ -45,11 +57,15 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Makes the object follow the mouse.
         //transform.position = Input.mousePosition;
 
+        // Check if the player has enough orbs
+        if (GameManager.Instance.PlayerOrbs < _orbCost) return;
+
         // Calculate the current selected tile
         GridManager.Instance.CalculateSelectedTile();
 
         // Set the position to the current tile
-        transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
+        //transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
+        _towerImage.transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
 
         // TODO: Make the object snap to the tiles as well.
     }
@@ -60,6 +76,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Without using camera, it will use canvas position instead.
         //Vector3 towerPosition = _towerSlotManager.cam.ScreenToWorldPoint(transform.position);
 
+        // Check if the player has enough orbs
+        if (GameManager.Instance.PlayerOrbs < _orbCost) return;
+
         // Use the grid tile position instead
         Vector3 towerPosition = GridManager.Instance.SelectedTilePosition;
 
@@ -67,7 +86,8 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //towerPosition = SnapToTileSize(towerPosition, _tileSize);
 
         // Resets tower slot sprite.
-        transform.position = _startPos;
+        //transform.position = _startPos;
+        _towerImage.transform.position = _startPos;
 
         // TODO: unhide the UI?
 
@@ -79,6 +99,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (!GridManager.Instance.IsValidTile(towerPosition)) return;
 
         // Creates the tower in that position.
+        //Tower tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity).GetComponent<Tower>();
         Tower tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity).GetComponent<Tower>();
 
         // Save the tower to the grid dictionary
@@ -86,6 +107,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         // Initialize the tower
         tower.InitializeTower();
+
+        // Remove the orbs from the player
+        GameManager.Instance.AddOrbs(-_orbCost);
     }
 
     // Snaps position to middle of tiles.
@@ -108,4 +132,5 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         return floatSize * multiple + remainder;
     }
+
 }
