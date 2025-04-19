@@ -36,17 +36,20 @@ public class EnemyManager : MonoBehaviour
     private void Awake()
     {
         // Make sure there is only one instance
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance != null) Destroy(gameObject);
+        else Instance = this;
 
         _waveSpawner = GetComponent<WaveSpawner>();
 
         _currentWave = 0;
+    }
+
+    // Call everytime a level is loaded
+    public void ResetWaves()
+    {
+        _currentWave = 0;
+        _waveStarted = false;
+        TextUIManager.Instance.ToggleNextButton(true);
     }
 
     // Waves
@@ -75,14 +78,14 @@ public class EnemyManager : MonoBehaviour
         _waveSpawner.StartWave(wave);
 
         // Update the UI
-        TextUIManager.Instance.HideNextButton();
+        TextUIManager.Instance.ToggleNextButton(false);
         TextUIManager.Instance.UpdateWavesText(_currentWave, MaxWaves);
     }
     private void EndWave()
     {
         _waveStarted = false;
 
-        TextUIManager.Instance.ShowNextButton();
+        TextUIManager.Instance.ToggleNextButton(true);
     }
 
     public void SpawnEnemy(EnemyType type)

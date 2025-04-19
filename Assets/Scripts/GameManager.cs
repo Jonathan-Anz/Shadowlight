@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,9 +14,12 @@ public class GameManager : MonoBehaviour
     private int _playerOrbs = 0;
     [SerializeField] private int _defaultPlayerLives; // Set in inspector
 
-    // Level
-    private bool _isPaused = false;
+    // Levels
     private int _currentLevel = 0;
+    private Levels currentLevel;
+
+    // Game
+    private bool _isPaused = false;
 
     // Waves (Moved to Enemy Manager)
     //[Header("Waves")]
@@ -32,25 +37,86 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         // Make sure there is only one instance
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance != null) Destroy(gameObject);
+        else Instance = this;
 
         // Set the player lives
         _playerLives = _defaultPlayerLives;
 
         // Initialize text to UI
-        InitializeUIText();
+        //InitializeUIText();
+    }
+
+    private void Start()
+    {
+        // TEMP: Load a level for the first time
+        // Eventually change to load from saved game data
+        LevelManager.Instance.LoadLevel(Levels.TestLevel);
     }
 
     // Scenes
+    // private Levels GetCurrentLevel(string sceneName)
+    // {
+    //     if (Enum.TryParse(sceneName, out Levels level))
+    //     {
+    //         return level;
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"Could not match scene name {sceneName} to Levels enum!");
+    //         return Levels.TitleScreen;
+    //     }
+
+    // }
     public void NextLevel()
     {
-        // TODO: go to next level
+        _currentLevel++;
+        string levelToLoad = LevelToSceneName(_currentLevel);
+        Debug.Log($"Loading {levelToLoad}...");
+        SceneManager.LoadScene(levelToLoad);
+    }
+    private string LevelToSceneName(int currentLevel)
+    {
+        Levels level = (Levels)currentLevel;
+        return level.ToString();
+    }
+    // Called when a level is loaded
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        //Debug.Log($"Loaded {scene.name}");
+
+        // Figure out the current level
+        //currentLevel = GetCurrentLevel(scene.name);
+
+        // When a new level is loaded...
+        // if (scene.name == Levels.TitleScreen.ToString())
+        // {
+        //     // If it's the title screen
+        //     //Debug.Log("Title Screen!");
+
+        //     // Show the title canvas
+        //     TextUIManager.Instance.ToggleTitleCanvas(true);
+
+        //     // Hide the game canvas
+        //     TextUIManager.Instance.ToggleGameCanvas(false);
+        // }
+        // else
+        // {
+        //     // If it's a game level
+        //     //Debug.Log("Game Level!");
+
+        //     // Find and activate the path for the level
+        //     PathManager.Instance.SetPath();
+
+        //     // Reset the waves
+        //     EnemyManager.Instance.ResetWaves();
+
+        //     // Show the game canvas
+        //     TextUIManager.Instance.ToggleGameCanvas(true);
+
+        //     // Hide the title canvas
+        //     TextUIManager.Instance.ToggleTitleCanvas(false);
+        // }
     }
 
     // Game
@@ -62,34 +128,22 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             //Debug.Log("Game paused");
-
-            TextUIManager.Instance.ShowPauseMenu();
         }
         else
         {
             Time.timeScale = 1f;
             //Debug.Log("Game resumed");
-
-            TextUIManager.Instance.HidePauseMenu();
         }
+
+        TextUIManager.Instance.TogglePauseMenu(_isPaused);
     }
     public void ExitToTitleScreen()
     {
-        Debug.Log("Exit to title screen");
+        //Debug.Log("Exit to title screen");
+
+        SceneManager.LoadScene("TitleScene");
     }
 
-    private void Start()
-    {
-        // TEMP: Spawn some enemies
-        //SpawnEnemy();
-        //Invoke("SpawnEnemy", 0.5f);
-        //Invoke("SpawnEnemy", 1.5f);
-    }
-    // TEMP: Invoke doesn't allow parameters
-    private void SpawnEnemy()
-    {
-        //EnemyManager.Instance.SpawnEnemy();
-    }
 
     // Subscribe functions to events
     private void OnEnable()

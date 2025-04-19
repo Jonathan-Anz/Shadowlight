@@ -6,6 +6,7 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private float _minSpawnVariation = 0.25f;
     [SerializeField] private float _maxSpawnVariation = 1f;
     [SerializeField] private Wave[] _sampleSceneWaves;
+    [SerializeField] private Wave[] _darkForestWaves;
     private bool _spawnedAllEnemies = false;
 
     // Getters
@@ -22,7 +23,7 @@ public class WaveSpawner : MonoBehaviour
         switch (currentLevel)
         {
             case 0: return _sampleSceneWaves;
-            // case 1: return _levelOneWaves; // Example
+            case 1: return _darkForestWaves;
             default: return _sampleSceneWaves;
         }
     }

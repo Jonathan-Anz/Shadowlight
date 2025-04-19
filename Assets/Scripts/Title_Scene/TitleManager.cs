@@ -10,7 +10,7 @@ public class TitleManager : MonoBehaviour
     // before sending the player to the main scene.
     public void PlayButton()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("GameScene");
     }
 
     // On-click behavior for the Quit Button.
