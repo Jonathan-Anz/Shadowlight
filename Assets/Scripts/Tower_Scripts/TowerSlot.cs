@@ -27,7 +27,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private void Awake()
     {
         // Set the orb cost text
-        _orbCostText.text = _orbCost.ToString();
+        _orbCostText.text = $"{_orbCost} orbs";
 
         // Not needed?
         //InitializeTowerSlot();
@@ -54,7 +54,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         // Instantiate the tower object
         _towerToPlace = Instantiate(_towerPrefab, GridManager.Instance.SelectedTilePosition, Quaternion.identity).GetComponent<Tower>();
-        _towerToPlace.InitializeTower();
+        _towerToPlace.InitializeTower(_orbCost);
         _towerToPlace.ToggleTowerAttacking(false);
         _towerToPlace.ToggleRangeVisual(true);
 

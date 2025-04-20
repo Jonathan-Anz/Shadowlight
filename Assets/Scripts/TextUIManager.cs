@@ -27,6 +27,7 @@ public class TextUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _attackPowerText;
     [SerializeField] private TextMeshProUGUI _attackSpeedText;
     [SerializeField] private TextMeshProUGUI _targetModeText;
+    [SerializeField] private TextMeshProUGUI _sellValueText;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class TextUIManager : MonoBehaviour
         _attackPowerText.text = $"Attack Power: {tower.AttackPower}";
         _attackSpeedText.text = $"Attack Speed: {tower.AttackSpeed}";
         _targetModeText.text = $"{tower.TargetMode}";
+        _sellValueText.text = $"+{tower.SellValue} orbs";
     }
 
     public void UpdateWavesText(int currentWave, int maxWaves)
