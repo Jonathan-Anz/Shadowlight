@@ -35,6 +35,7 @@ public class Tower : MonoBehaviour
     private bool _hasEnemiesInRange = false;
 
     // Attacking
+    private bool _isDisabled = true;
     private float _attackTimer = 0f;
     private Enemy _currentTarget = null;
 
@@ -55,6 +56,7 @@ public class Tower : MonoBehaviour
     {
         _attackTimer = 0f;
         _rangeCollider = GetComponent<CircleCollider2D>();
+        _isDisabled = false;
 
         // Changes range to value set in inspector
         ChangeRange(_range);
@@ -68,8 +70,12 @@ public class Tower : MonoBehaviour
     }
 
     #region Attacking
+    public void ToggleTowerAttacking(bool value) => _isDisabled = !value;
+
     private void AttackCheck()
     {
+        if (_isDisabled) return;
+
         // Reduce the attack cooldown
         _attackTimer -= Time.deltaTime;
 
@@ -177,10 +183,7 @@ public class Tower : MonoBehaviour
         // Need to double the range for the visual because the sprite works in diameter, not radius
         _rangeVisual.transform.localScale = new Vector3(_range * 2f, _range * 2f, 1f);
     }
-    
-    public void ShowRangeVisual() => _rangeVisual.enabled = true;
-    
-    public void HideRangeVisual() => _rangeVisual.enabled = false;
+    public void ToggleRangeVisual(bool value) => _rangeVisual.enabled = value;
     #endregion
     
     // DEBUG
