@@ -128,12 +128,42 @@ public class GridManager : MonoBehaviour
         _towerTiles.TryGetValue(tile, out Tower tower);
         return tower;
     }
+    public void RemoveTowerFromTile(Tower tower)
+    {
+        // Remove from towers list
+        if (!_towerTiles.Remove(_selectedTilePosition))
+        {
+            Debug.LogWarning($"Could not find a tower at {_selectedTilePosition}");
+        }
+
+        // Set the tile as valid again
+        _invalidTiles.Remove(_selectedTilePosition);
+
+        // Destroy the tower
+        Destroy(tower.gameObject);
+    }
     public void UpdateSelectedTowerTargetMode()
     {
         _selectedTower.ChangeTargetMode();
 
         // Update the UI again
         TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
+    }
+    public void SellSelectedTower()
+    {
+        // Give orbs to player
+        GameManager.Instance.AddOrbs(_selectedTower.SellValue);
+
+        // Remove the tower
+        RemoveTowerFromTile(_selectedTower);
+
+        // Disable the tower info panel
+        TextUIManager.Instance.ToggleTowerInfo(false);
+
+        // Enable the tower panels
+        TextUIManager.Instance.ToggleTowerPanels(true);
+
+        _selectedTower = null;
     }
 
     public void ClearGrid()

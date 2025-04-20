@@ -29,6 +29,9 @@ public class Tower : MonoBehaviour
     [SerializeField] private SpriteRenderer _towerVisual;
     [SerializeField] private SpriteRenderer _rangeVisual;
 
+    [Header("Selling")]
+    [SerializeField] private float _sellMultiplier = 0.75f;
+    private int _orbValue;
 
     // Each tower has a list of enemies in its range
     private List<Enemy> _enemiesInRange = new List<Enemy>();
@@ -49,14 +52,16 @@ public class Tower : MonoBehaviour
     public float AttackSpeed => _attackSpeed;
     public TowerTargetMode TargetMode => _targetMode;
     public Sprite TowerVisual => _towerVisual.sprite;
+    public int SellValue => Mathf.RoundToInt(_orbValue * _sellMultiplier);
 
 
     // Call when spawning in the tower
-    public void InitializeTower()
+    public void InitializeTower(int orbValue)
     {
         _attackTimer = 0f;
         _rangeCollider = GetComponent<CircleCollider2D>();
         _isDisabled = false;
+        _orbValue = orbValue;
 
         // Changes range to value set in inspector
         ChangeRange(_range);
