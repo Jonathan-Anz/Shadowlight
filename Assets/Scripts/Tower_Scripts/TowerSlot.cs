@@ -17,8 +17,11 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     // Temporary, will need to get this somewhere
     //[SerializeField] private float _tileSize = 1;
 
-    private TowerSlotManager _towerSlotManager;
-    private Vector3 _startPos;
+    //private TowerSlotManager _towerSlotManager;
+
+    private Tower _towerToPlace;
+    //private Vector3 _towerPosition;
+    //private Vector3 _startPos;
 
 
     private void Awake()
@@ -32,7 +35,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private void InitializeTowerSlot()
     {
-        _towerSlotManager = GetComponentInParent<TowerSlotManager>();
+        //_towerSlotManager = GetComponentInParent<TowerSlotManager>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -42,7 +45,18 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         // Stores position to restore it after dragging.
         //_startPos = transform.position;
-        _startPos = _towerImage.transform.position;
+        //_startPos = _towerImage.transform.position;
+
+        GridManager.Instance.CalculateSelectedTile();
+
+        // Use the grid tile position instead
+        //_towerPosition = GridManager.Instance.SelectedTilePosition;
+
+        // Instantiate the tower object
+        _towerToPlace = Instantiate(_towerPrefab, GridManager.Instance.SelectedTilePosition, Quaternion.identity).GetComponent<Tower>();
+        _towerToPlace.InitializeTower();
+        _towerToPlace.ToggleTowerAttacking(false);
+        _towerToPlace.ToggleRangeVisual(true);
 
         // TODO: hide the UI?
 
@@ -61,11 +75,12 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (GameManager.Instance.PlayerOrbs < _orbCost) return;
 
         // Calculate the current selected tile
-        GridManager.Instance.CalculateSelectedTile();
+        GridManager.Instance.CalculateSelectedTile(); 
+        _towerToPlace.transform.position = GridManager.Instance.SelectedTilePosition;
 
         // Set the position to the current tile
         //transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
-        _towerImage.transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
+        //_towerImage.transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
 
         // TODO: Make the object snap to the tiles as well.
     }
@@ -80,33 +95,42 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (GameManager.Instance.PlayerOrbs < _orbCost) return;
 
         // Use the grid tile position instead
-        Vector3 towerPosition = GridManager.Instance.SelectedTilePosition;
+        //_towerPosition = GridManager.Instance.SelectedTilePosition;
 
         // Snaps tower position to tile.
         //towerPosition = SnapToTileSize(towerPosition, _tileSize);
 
         // Resets tower slot sprite.
         //transform.position = _startPos;
-        _towerImage.transform.position = _startPos;
+        //_towerImage.transform.position = _startPos;
 
         // TODO: unhide the UI?
+
+        // Unhighlight the range visual
+        _towerToPlace.ToggleRangeVisual(false);
 
         // Un-highlight the grid
         GridManager.Instance.HighlightGridVisual(false);
         GridManager.Instance.HighlightTileSelector(false);
 
         // Check if the tile is valid
-        if (!GridManager.Instance.IsValidTile(towerPosition)) return;
+        if (!GridManager.Instance.IsValidTile(GridManager.Instance.SelectedTilePosition))
+        {
+            Destroy(_towerToPlace.gameObject);
+            return;
+        }
 
         // Creates the tower in that position.
         //Tower tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity).GetComponent<Tower>();
-        Tower tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity).GetComponent<Tower>();
 
         // Save the tower to the grid dictionary
-        GridManager.Instance.AddTowerToTile(towerPosition, tower);
+        GridManager.Instance.AddTowerToTile(GridManager.Instance.SelectedTilePosition, _towerToPlace);
 
         // Initialize the tower
-        tower.InitializeTower();
+        //_towerToPlace.InitializeTower();
+
+        // Re-enable attacking
+        _towerToPlace.ToggleTowerAttacking(true);
 
         // Remove the orbs from the player
         GameManager.Instance.AddOrbs(-_orbCost);

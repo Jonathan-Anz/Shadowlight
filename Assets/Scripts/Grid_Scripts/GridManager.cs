@@ -21,13 +21,6 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector3, Tower> _towerTiles = new Dictionary<Vector3, Tower>();
     private HashSet<Vector3> _invalidTiles = new HashSet<Vector3>();
 
-
-    //[SerializeField] private int width, height; // Set in inspector
-    //[SerializeField] private Tile tilePrefab; // Set in inspector
-    //[SerializeField] private Transform mainCamera; // Set in inspector
-
-    //private Dictionary<Vector2, Tile> tiles;
-
     // Getters
     public Vector3 SelectedTilePosition => _selectedTilePosition;
 
@@ -69,7 +62,7 @@ public class GridManager : MonoBehaviour
         //Debug.Log("Clicked on grid!");
 
         // Hide the range of the previous selected tower
-        _selectedTower?.HideRangeVisual();
+        _selectedTower?.ToggleRangeVisual(false);
 
         CalculateSelectedTile();
         //Debug.Log($"Selected tile: {_selectedTilePosition}");
@@ -88,7 +81,7 @@ public class GridManager : MonoBehaviour
             TextUIManager.Instance.UpdateTowerInfo(_selectedTower);
 
             // Show the tower's range
-            _selectedTower.ShowRangeVisual();
+            _selectedTower.ToggleRangeVisual(true);
         }
         else
         {
@@ -161,41 +154,4 @@ public class GridManager : MonoBehaviour
     public void HighlightGridVisual(bool value) => _gridVisual.enabled = value;
     public void HighlightTileSelector(bool value) => _selectedTileIndicator.enabled = value;
 
-    // Creates a grid of tiles
-    // private void GenerateGrid()
-    // {
-    //     // Initialize the tiles dictionary
-    //     tiles = new Dictionary<Vector2, Tile>();
-
-    //     // Loop over every tile position
-    //     for (int x = 0; x < width; x++)
-    //     {
-    //         for (int y = 0; y < height; y++)
-    //         {
-    //             // Spawn a tile object
-    //             Tile spawnedTile = Instantiate(tilePrefab, new Vector3(x, y, 0f), Quaternion.identity);
-
-    //             // Set the tiles as children of the grid manager so the hierarchy doesn't get cluttered up
-    //             spawnedTile.name = $"Tile ({x}, {y})";
-    //             spawnedTile.transform.SetParent(this.transform);
-
-    //             // Save the tile in the tiles dictionary
-    //             tiles[new Vector2(x, y)] = spawnedTile;
-    //         }
-    //     }
-
-    //     // Move the camera to be centered on the grid (keep the z axis position the same)
-    //     mainCamera.transform.position = new Vector3((width / 2f) - 0.5f,
-    //                                                 (height / 2f) - 0.5f,
-    //                                                 mainCamera.transform.position.z);
-    // }
-
-    // Gets a specific tile
-    // public Tile GetTileAtPosition(Vector2 position)
-    // {
-    //     if (tiles.TryGetValue(position, out Tile tile)) return tile;
-
-    //     return null;
-    // }
-    
 }
