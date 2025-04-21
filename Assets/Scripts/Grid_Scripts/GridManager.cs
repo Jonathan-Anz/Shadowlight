@@ -87,7 +87,11 @@ public class GridManager : MonoBehaviour
 
     public void ResetGrid()
     {
-        for (int i = 0; i < _gridTiles.Length; i++) _gridTiles[i].ResetTileInfo();
+        for (int i = 0; i < _gridTiles.Length; i++)
+        {
+            if (_gridTiles[i].HasTower) Destroy(_gridTiles[i].Tower.gameObject);
+            _gridTiles[i].ResetTileInfo();
+        }
     }
 
     public GridTile GetTileFromPosition(Vector3 position) => Array.Find(_gridTiles, tile => tile.Position == position);
