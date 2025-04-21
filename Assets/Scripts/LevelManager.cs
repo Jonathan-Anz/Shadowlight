@@ -56,7 +56,7 @@ public class LevelManager : MonoBehaviour
         // TODO: Add level transition (fade to black?)
 
         // Clear the placed towers
-        GridManager.Instance.ClearGrid();
+        GridManager.Instance.ResetGrid();
 
         // Disable the current loaded level
         _currentLevelObject?.SetActive(false);

@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private int _damage;
     [SerializeField] private int _orbAmount;
+    [SerializeField] private float _burnRadius;
 
     // Each enemy needs a path to follow
     private Path _path = null;
@@ -24,6 +25,7 @@ public class Enemy : MonoBehaviour
     public float Speed => _speed;
     public int Damage => _damage;
     public int OrbAmount => _orbAmount;
+    public float BurnRadius => _burnRadius;
     public float PercentAlongPath => _percentAlongPath;
 
 
@@ -45,6 +47,11 @@ public class Enemy : MonoBehaviour
     {
         // Have the enemy follow the path
         FollowPath();
+
+        // Burn tiles around it
+        //Vector3 tile = GridManager.Instance.GetNearestTile(transform.position);
+        //DebugExtension.DebugCircle(tile, -Vector3.forward, Color.white, 0.5f);
+        GridManager.Instance.BurnTilesInRange(transform.position, _burnRadius);
     }
 
     private void FollowPath()
