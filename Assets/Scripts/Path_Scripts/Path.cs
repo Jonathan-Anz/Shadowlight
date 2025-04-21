@@ -6,7 +6,7 @@ public class Path : MonoBehaviour
     // Path properties
     [SerializeField] private Transform[] _points; // Set in inspector
     [SerializeField, Range(0f, 5f)] private float _pathWidth; // Set in inspector
-    [SerializeField] private int _pathCheckDistance = 15; // Set in inspector
+    //[SerializeField] private int _pathCheckDistance = 15; // Set in inspector
     private float _totalPathDistance;
     private LineRenderer _lineRenderer;
 
@@ -71,7 +71,7 @@ public class Path : MonoBehaviour
         col.sharedMesh = mesh;
 
         // Check for path tiles by raycasting against the collider
-        GridManager.Instance.CheckForPathTiles(_pathCheckDistance);
+        GridManager.Instance.InitializePathTiles();
 
         // Remove the collider
         Destroy(col);

@@ -53,6 +53,7 @@ public class Tower : MonoBehaviour
     public TowerTargetMode TargetMode => _targetMode;
     public Sprite TowerVisual => _towerVisual.sprite;
     public int SellValue => Mathf.RoundToInt(_orbValue * _sellMultiplier);
+    public bool IsDisabled => _isDisabled;
 
 
     // Call when spawning in the tower
@@ -75,7 +76,7 @@ public class Tower : MonoBehaviour
     }
 
     #region Attacking
-    public void ToggleTowerAttacking(bool value) => _isDisabled = !value;
+    public void DisableTower(bool value) => _isDisabled = !value;
 
     private void AttackCheck()
     {

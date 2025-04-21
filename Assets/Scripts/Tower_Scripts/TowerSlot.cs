@@ -53,9 +53,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //_towerPosition = GridManager.Instance.SelectedTilePosition;
 
         // Instantiate the tower object
-        _towerToPlace = Instantiate(_towerPrefab, GridManager.Instance.SelectedTilePosition, Quaternion.identity).GetComponent<Tower>();
+        _towerToPlace = Instantiate(_towerPrefab, GridManager.Instance.SelectedTile.Position, Quaternion.identity).GetComponent<Tower>();
         _towerToPlace.InitializeTower(_orbCost);
-        _towerToPlace.ToggleTowerAttacking(false);
+        _towerToPlace.DisableTower(false);
         _towerToPlace.ToggleRangeVisual(true);
 
         // TODO: hide the UI?
@@ -76,7 +76,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         // Calculate the current selected tile
         GridManager.Instance.CalculateSelectedTile(); 
-        _towerToPlace.transform.position = GridManager.Instance.SelectedTilePosition;
+        _towerToPlace.transform.position = GridManager.Instance.SelectedTile.Position;
 
         // Set the position to the current tile
         //transform.position = Camera.main.WorldToScreenPoint(GridManager.Instance.SelectedTilePosition);
@@ -114,7 +114,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         GridManager.Instance.HighlightTileSelector(false);
 
         // Check if the tile is valid
-        if (!GridManager.Instance.IsValidTile(GridManager.Instance.SelectedTilePosition))
+        if (!GridManager.Instance.SelectedTile.IsValidTile())
         {
             Destroy(_towerToPlace.gameObject);
             return;
@@ -123,14 +123,15 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Creates the tower in that position.
         //Tower tower = Instantiate(_towerPrefab, towerPosition, Quaternion.identity).GetComponent<Tower>();
 
-        // Save the tower to the grid dictionary
-        GridManager.Instance.AddTowerToTile(GridManager.Instance.SelectedTilePosition, _towerToPlace);
+        // Save the tower to the selected tile
+        //GridManager.Instance.AddTowerToSelectedTile(_towerToPlace);
+        GridManager.Instance.SelectedTile.AddTowerToTile(_towerToPlace);
 
         // Initialize the tower
         //_towerToPlace.InitializeTower();
 
         // Re-enable attacking
-        _towerToPlace.ToggleTowerAttacking(true);
+        _towerToPlace.DisableTower(true);
 
         // Remove the orbs from the player
         GameManager.Instance.AddOrbs(-_orbCost);
