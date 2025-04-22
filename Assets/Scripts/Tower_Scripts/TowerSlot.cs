@@ -9,9 +9,9 @@ using UnityEngine.UI;
 public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     // Tower to create
+    [Header("Tower Details")]
     [SerializeField] private GameObject _towerPrefab;
-    [SerializeField] private GameObject _towerImage;
-    [SerializeField] private TextMeshProUGUI _orbCostText;
+    [SerializeField] private Sprite _towerImage;
     [SerializeField] private int _orbCost;
 
     // Temporary, will need to get this somewhere
@@ -19,29 +19,62 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     //private TowerSlotManager _towerSlotManager;
 
+    // References
     private Tower _towerToPlace;
+    private Image _slotImage;
+
+    private TextMeshProUGUI _orbCostText;
+    private bool _isActive;
     //private Vector3 _towerPosition;
     //private Vector3 _startPos;
 
 
     private void Awake()
     {
-        // Set the orb cost text
-        _orbCostText.text = $"{_orbCost} orbs";
+        // Get references to components
+        _slotImage = gameObject.transform.GetChild(0).GetComponent<Image>();
+        _orbCostText = GetComponentInChildren<TextMeshProUGUI>();
 
-        // Not needed?
-        //InitializeTowerSlot();
+        // Set sprites and text
+        InitializeTowerSlot();
     }
 
     private void InitializeTowerSlot()
     {
         //_towerSlotManager = GetComponentInParent<TowerSlotManager>();
+
+        // "Locks" the slot if there is no prefab
+        if (_towerPrefab == null)
+        {
+            _orbCostText.gameObject.SetActive(false);
+            _slotImage.gameObject.SetActive(false);
+            _isActive = false;
+        }
+        else
+        {
+            _orbCostText.gameObject.SetActive(true);
+            _slotImage.gameObject.SetActive(true);
+            _isActive = true;
+
+            // Set the orb cost text
+            _orbCostText.text = $"{_orbCost} orbs";
+
+            // Set sprite
+            _slotImage.sprite = _towerImage;
+        }
+    }
+
+    // Set the tower for the slot
+    // Will be called by the slot manager in the future
+    public void SetTower()
+    {
+        // To be implemented to be able to add new towers from the shop
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Check if the player has enough orbs
-        if (GameManager.Instance.PlayerOrbs < _orbCost) return;
+        // Check if the player has enough orbs or if the slot is active
+        if (GameManager.Instance.PlayerOrbs < _orbCost || !_isActive) return;
 
         // Stores position to restore it after dragging.
         //_startPos = transform.position;
