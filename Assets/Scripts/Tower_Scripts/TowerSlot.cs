@@ -14,6 +14,8 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     [SerializeField] private Sprite _towerImage;
     [SerializeField] private int _orbCost;
 
+    [Header("Misc")]
+    [SerializeField] private Sprite _lockImage;
     // Temporary, will need to get this somewhere
     //[SerializeField] private float _tileSize = 1;
 
@@ -47,13 +49,14 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (_towerPrefab == null)
         {
             _orbCostText.gameObject.SetActive(false);
-            _slotImage.gameObject.SetActive(false);
             _isActive = false;
+
+            // Set the sprite to a lock
+            _slotImage.sprite = _lockImage;
         }
         else
         {
             _orbCostText.gameObject.SetActive(true);
-            _slotImage.gameObject.SetActive(true);
             _isActive = true;
 
             // Set the orb cost text
