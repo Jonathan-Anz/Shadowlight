@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Bear
   _range: 2
-  _attackPower: 10
+  _attackPower: 6
   _attackSpeed: 0.5
   _attackType: 0
   _projectilePrefab: {fileID: 2008948009553887626, guid: c69a18f4528dfa643b6ea9bace631048, type: 3}

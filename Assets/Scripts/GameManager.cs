@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour
         // Load the first level
         // TEMP: Change to dark forest
         LevelManager.Instance.LoadLevel(Levels.TestLevel);
+
+        // TEMP: Add base towers to player
+        TowerSlotManager.Instance.AddTower(TowerType.Bear, 10);
+        TowerSlotManager.Instance.AddTower(TowerType.Bat, 5);
+        TowerSlotManager.Instance.AddTower(TowerType.Bird, 5);
     }
     public void PauseGame()
     {

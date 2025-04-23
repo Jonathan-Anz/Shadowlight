@@ -12,6 +12,10 @@ public enum TowerAttackType
     Melee, Ranged
 }
 
+public enum TowerType 
+{ 
+    Bear, Bat, Bird,
+}
 public class Tower : MonoBehaviour
 {
     // Tower properties: set in inspector

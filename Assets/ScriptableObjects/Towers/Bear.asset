@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d51616eb46e8f0498f77f609be38942, type: 3}
+  m_Name: Bear
+  m_EditorClassIdentifier: 
+  towerType: 0
+  towerPrefab: {fileID: 394382112967063073, guid: d91373402bfd8e14fbff7b9f2e473962, type: 3}
+  towerSprite: {fileID: 21300000, guid: ddd3fccd72d423c4b9c3ff7a6af6b7fa, type: 3}

@@ -10,8 +10,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 {
     // Tower to create
     [Header("Tower Details")]
-    [SerializeField] private GameObject _towerPrefab;
-    [SerializeField] private Sprite _towerImage;
+    [SerializeField] private TowerData _tower;
     [SerializeField] private int _orbCost;
 
     [Header("Misc")]
@@ -30,6 +29,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //private Vector3 _towerPosition;
     //private Vector3 _startPos;
 
+    // Getters
+    public TowerData Tower => _tower;
+
 
     private void Awake()
     {
@@ -43,10 +45,11 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private void InitializeTowerSlot()
     {
-        //_towerSlotManager = GetComponentInParent<TowerSlotManager>();
+        //_towerSlotManager = GetComponentInParent<TowerSlotManager
+
 
         // "Locks" the slot if there is no prefab
-        if (_towerPrefab == null)
+        if (_tower == null || _tower.towerPrefab == null)
         {
             _orbCostText.gameObject.SetActive(false);
             _isActive = false;
@@ -63,15 +66,18 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             _orbCostText.text = $"{_orbCost} orbs";
 
             // Set sprite
-            _slotImage.sprite = _towerImage;
+            _slotImage.sprite = _tower.towerSprite;
         }
     }
 
     // Set the tower for the slot
-    // Will be called by the slot manager in the future
-    public void SetTower()
+    // Called by the tower manager
+    public void SetTower(TowerData tower, int cost)
     {
-        // To be implemented to be able to add new towers from the shop
+        _tower = tower;
+        _orbCost = cost;
+
+        InitializeTowerSlot();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -89,7 +95,7 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //_towerPosition = GridManager.Instance.SelectedTilePosition;
 
         // Instantiate the tower object
-        _towerToPlace = Instantiate(_towerPrefab, GridManager.Instance.SelectedTile.Position, Quaternion.identity).GetComponent<Tower>();
+        _towerToPlace = Instantiate(_tower.towerPrefab, GridManager.Instance.SelectedTile.Position, Quaternion.identity).GetComponent<Tower>();
         _towerToPlace.InitializeTower(_orbCost);
         _towerToPlace.DisableTower(false);
         _towerToPlace.ToggleRangeVisual(true);
