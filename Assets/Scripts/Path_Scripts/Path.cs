@@ -35,6 +35,9 @@ public class Path : MonoBehaviour
 
     private void CalculatePathDistance()
     {
+        // Reset the path distance
+        _totalPathDistance = 0f;
+
         // Loop over every path segment
         for (int i = 0; i < _points.Length - 1; i++)
         {

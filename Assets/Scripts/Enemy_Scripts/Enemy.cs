@@ -36,6 +36,8 @@ public class Enemy : MonoBehaviour
 
         // Set this enemy's path
         _path = PathManager.Instance.ActivePath;
+        _distanceTraveled = 0f;
+        //Debug.Log($"This enemy's path distance is: {_path.TotalPathDistance}");
 
         // Place the enemy at the start of the path
         // Eventually allow enemies to be placed further along the path?
@@ -63,6 +65,8 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        //Debug.Log($"Enemy {_name} is following the path {_path.name}");
+
         // If the enemey hasn't reached the end of the path...
         if (_pathPointIndex <= _path.Points.Length - 1)
         {
@@ -88,6 +92,7 @@ public class Enemy : MonoBehaviour
 
             // Check if the enemy reached the end of the path
             // Use 0.999 to allow some room for error
+            //Debug.Log($"Enemy {_name} percent along path: {_percentAlongPath}");
             if (_percentAlongPath >= 0.98f)
             {
                 //Debug.Log($"Enemy: ({_name}) reached the end!");

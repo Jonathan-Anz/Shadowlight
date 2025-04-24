@@ -16,6 +16,9 @@ public class TextUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _wavesText;
     [SerializeField] private GameObject _nextButton;
     [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _levelCompleteMenu;
+    [SerializeField] private GameObject _gameLostMenu;
+    [SerializeField] private GameObject _gameWinMenu;
 
     [Header("Tower Panels")]
     [SerializeField] private GameObject _towerPanels;
@@ -39,6 +42,9 @@ public class TextUIManager : MonoBehaviour
     // UI
     public void ToggleNextButton(bool value) => _nextButton.SetActive(value);
     public void TogglePauseMenu(bool value) => _pauseMenu.SetActive(value);
+    public void ToggleLevelCompleteMenu(bool value) => _levelCompleteMenu.SetActive(value);
+    public void ToggleGameLostMenu(bool value) => _gameLostMenu.SetActive(value);
+    public void ToggleGameWinMenu(bool value) => _gameWinMenu.SetActive(value);
 
     // Tower Panels
     public void ToggleTowerPanels(bool value) => _towerPanels.SetActive(value);
@@ -74,4 +80,5 @@ public class TextUIManager : MonoBehaviour
     {
         _orbsText.text = $"<b>Orbs</b>: {playerOrbs}";
     }
+
 }

@@ -11,8 +11,14 @@ public class LevelManager : MonoBehaviour
     // Singleton
     public static LevelManager Instance;
 
+    // Save the player stats at the start of a level (in case of a retry)
+    private int _playerLivesAtStart;
+    private int _playerOrbsAtStart;
+
     // Level cycle
     private Levels _currentLevel;
+    [SerializeField] private Levels _firstLevel = Levels.DarkForest;
+    [SerializeField] private Levels _lastLevel = Levels.SnowyForest; // Used to determine the end of the game
 
     // Level gameobjects (maybe use array instead?)
     private GameObject _currentLevelObject;
@@ -21,8 +27,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject _mushroomForestLevel;
     [SerializeField] private GameObject _snowyForestLevel;
 
+    // Level rewards
+    [Header("Dark Forest Rewards")]
+    [SerializeField] private int _darkForestOrbReward = 0;
+    [Header("Mushroom Forest Rewards")]
+    [SerializeField] private int _mushroomForestOrbReward = 0;
+
     // Getters
     public Levels CurrentLevel => _currentLevel;
+    public Levels FirstLevel => _firstLevel;
+    public Levels LastLevel => _lastLevel;
 
 
     private void Awake()
@@ -53,10 +67,16 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log($"Loading {level} level...");
 
+        // Make sure time is running
+        Time.timeScale = 1f;
+
         // TODO: Add level transition (fade to black?)
 
         // Clear the placed towers
         GridManager.Instance.ResetGrid();
+
+        // Clear any enemies
+        EnemyManager.Instance.ClearAllEnemies();
 
         // Disable the current loaded level
         _currentLevelObject?.SetActive(false);
@@ -74,11 +94,28 @@ public class LevelManager : MonoBehaviour
         // Reset the waves for the new level
         EnemyManager.Instance.ResetWaves();
 
+        // Save the player stats
+        _playerLivesAtStart = GameManager.Instance.PlayerLives;
+        _playerOrbsAtStart = GameManager.Instance.PlayerOrbs;
+
         // Update the UI
         TextUIManager.Instance.UpdateLivesText(GameManager.Instance.PlayerLives);
         TextUIManager.Instance.UpdateOrbsText(GameManager.Instance.PlayerOrbs);
+        TextUIManager.Instance.TogglePauseMenu(false);
+        TextUIManager.Instance.ToggleLevelCompleteMenu(false);
+        TextUIManager.Instance.ToggleGameLostMenu(false);
+        TextUIManager.Instance.ToggleGameWinMenu(false);
 
         // TODO: Add level transition (fade from black?)
+    }
+
+    public void ResetLevel()
+    {
+        // Reset the player values to what they where at the start of the level
+        GameManager.Instance.SetPlayerLives(_playerLivesAtStart);
+        GameManager.Instance.SetPlayerOrbs(_playerOrbsAtStart);
+
+        LoadLevel(_currentLevel);
     }
 
     public Levels GetNextLevel()
@@ -89,13 +126,25 @@ public class LevelManager : MonoBehaviour
 
         if (index >= Enum.GetNames(typeof(Levels)).Length)
         {
-            // Finished all levels
-            
-            // TODO: Trigger "player wins" event and go back to title screen
-
             index = 0;
         }
 
         return (Levels)index;
+    }
+
+    public void GetLevelRewards()
+    {
+        // Add tower unlocks as level reward?
+        switch(_currentLevel)
+        {
+            case Levels.DarkForest:
+                GameManager.Instance.AddOrbs(_darkForestOrbReward);
+                break;
+            case Levels.MushroomForest:
+                GameManager.Instance.AddOrbs(_mushroomForestOrbReward);
+                break;
+            default:
+                break;
+        }
     }
 }
