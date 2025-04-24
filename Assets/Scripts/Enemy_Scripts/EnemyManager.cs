@@ -82,6 +82,7 @@ public class EnemyManager : MonoBehaviour
         if (_currentWave == _currentLevelWaves.Length)
         {
             _finishedLevel = true;
+            GameManager.Instance.LevelCompleted();
         }
 
         _currentWave++;
@@ -89,6 +90,14 @@ public class EnemyManager : MonoBehaviour
         // Update the UI
         TextUIManager.Instance.ToggleNextButton(true);
         TextUIManager.Instance.UpdateWavesText(_currentWave, MaxWaves);
+
+        // Check if the last level is finished
+        if (LevelManager.Instance.CurrentLevel == LevelManager.Instance.LastLevel &&
+            _finishedLevel &&
+            !GameManager.Instance.GameOver)
+        {
+            GameManager.Instance.GameCompleted();
+        }
     }
 
     public void SpawnEnemy(EnemyType type)
@@ -100,6 +109,16 @@ public class EnemyManager : MonoBehaviour
 
         spawnedEnemy.InitializeEnemy();
         _enemyList.Add(spawnedEnemy);
+    }
+
+    public void ClearAllEnemies()
+    {
+        for (int i = 0; i < _enemyList.Count; i++)
+        {
+            Destroy(_enemyList[i].gameObject);
+        }
+
+        _enemyList.Clear();
     }
 
     private GameObject EnemyTypeToPrefab(EnemyType type)
@@ -117,6 +136,8 @@ public class EnemyManager : MonoBehaviour
     // Enemies that reach the end of the path will call this function
     public void EnemyReachedEndOfPath(Enemy enemy)
     {
+        //Debug.Log($"{enemy.name} reached the end");
+
         // Trigger the OnEnemyReachedEnd event
         OnEnemyReachedEnd?.Invoke(enemy.Damage);
 
