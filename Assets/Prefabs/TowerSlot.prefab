@@ -151,7 +151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6363703497930650458
 RectTransform:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3220210015505756476
 CanvasRenderer:
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -314,7 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93e3ed22ac493d74781159c2727c9fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _towerPrefab: {fileID: 61579914623378698, guid: b5acc808c27003d48a91a010e4c5174f, type: 3}
-  _towerImage: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _tower: {fileID: 0}
   _orbCost: 5
   _lockImage: {fileID: 21300000, guid: e355330668acd3144aa94cada76a8210, type: 3}

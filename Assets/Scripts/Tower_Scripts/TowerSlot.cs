@@ -47,6 +47,8 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         //_towerSlotManager = GetComponentInParent<TowerSlotManager
 
+        // Makes sure the sprite is active
+        _slotImage.gameObject.SetActive(true);
 
         // "Locks" the slot if there is no prefab
         if (_tower == null || _tower.towerPrefab == null)
