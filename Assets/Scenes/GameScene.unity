@@ -8288,7 +8288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultPlayerLives: 100
-  _defaultPlayerOrbs: 100
+  _defaultPlayerOrbs: 15
 --- !u!1 &7241419441951096086
 GameObject:
   m_ObjectHideFlags: 0
