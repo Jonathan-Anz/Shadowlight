@@ -748,7 +748,7 @@ PrefabInstance:
     - target: {fileID: 2666731343624318395, guid: 5eb53290c202748438becc39001d0876, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 6764ac7869774b849bb01283e2a71e86, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3040143900974789729, guid: 5eb53290c202748438becc39001d0876, type: 3}
       propertyPath: m_Name
       value: Test Path
@@ -6624,7 +6624,7 @@ MonoBehaviour:
   _gridVisual: {fileID: 3582873050834698053}
   _selectedTileIndicator: {fileID: 953343232}
   _burnThreshold: 2
-  _burnMultiplier: 15
+  _burnMultiplier: 3
   _healMultiplier: 1
 --- !u!224 &2874981651682580133 stripped
 RectTransform:

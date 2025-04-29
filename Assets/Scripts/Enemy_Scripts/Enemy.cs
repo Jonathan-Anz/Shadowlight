@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -8,6 +10,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private int _damage;
     [SerializeField] private int _orbAmount;
+    [Header("Burn offset 0 is the current tile, 1 is previous tile, etc")]
+    [SerializeField] private int _burnOffset;
     [SerializeField] private float _burnRadius;
 
     // Each enemy needs a path to follow
@@ -15,6 +19,10 @@ public class Enemy : MonoBehaviour
     private int _pathPointIndex = 0;
     private float _distanceTraveled = 0f;
     private float _percentAlongPath = 0f;
+
+    // Tiles
+    private GridTile _currentTile;
+    private List<GridTile> _previousTiles = new List<GridTile>();
 
     // Death
     private bool _hasDied = false;
@@ -43,6 +51,10 @@ public class Enemy : MonoBehaviour
         // Eventually allow enemies to be placed further along the path?
         // Like if an enemy spawns another enemy?
         transform.position = _path.Points[_pathPointIndex].transform.position;
+
+        // Get the current tile
+        _currentTile = GridManager.Instance.GetTileFromWorldPosition(transform.position);
+        _previousTiles.Add(_currentTile);
     }
 
     private void Update()
@@ -50,10 +62,23 @@ public class Enemy : MonoBehaviour
         // Have the enemy follow the path
         FollowPath();
 
+        UpdatePreviousTilesList();
+
+        GridTile burnTile = GetPeviousTile(_burnOffset);
+        if (burnTile != null)
+        {
+            //DebugExtension.DebugCircle(burnTile.Position, -Vector3.forward, Color.white, 0.5f);
+
+            // Burn tiles
+            GridManager.Instance.BurnTilesInRange(burnTile.Position, _burnRadius);
+        }
+
+        
+
         // Burn tiles around it
         //Vector3 tile = GridManager.Instance.GetNearestTile(transform.position);
         //DebugExtension.DebugCircle(tile, -Vector3.forward, Color.white, 0.5f);
-        GridManager.Instance.BurnTilesInRange(transform.position, _burnRadius);
+        //GridManager.Instance.BurnTilesInRange(transform.position, _burnRadius);
     }
 
     private void FollowPath()
@@ -99,6 +124,26 @@ public class Enemy : MonoBehaviour
                 EnemyManager.Instance.EnemyReachedEndOfPath(this);
             }
         }
+    }
+
+    // Tiles
+    private void UpdatePreviousTilesList()
+    {
+        // Get the current tile
+        _currentTile = GridManager.Instance.GetTileFromWorldPosition(transform.position);
+        //DebugExtension.DebugCircle(_currentTile.Position, -Vector3.forward, Color.yellow, 0.5f);
+        if (_currentTile != _previousTiles.Last())
+        {
+            // Entered a new tile
+            _previousTiles.Add(_currentTile);
+            
+            //Debug.Log($"Enemy {_name} is now in tile {_currentTile.Position}");
+        }
+    }
+    private GridTile GetPeviousTile(int index)
+    {
+        if (index >= _previousTiles.Count) return null;
+        else return _previousTiles[_previousTiles.Count - index - 1];
     }
 
     public void DamageEnemy(int damage)

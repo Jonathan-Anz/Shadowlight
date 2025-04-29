@@ -94,7 +94,13 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public GridTile GetTileFromPosition(Vector3 position) => Array.Find(_gridTiles, tile => tile.Position == position);
+    private GridTile GetTileFromTilePosition(Vector3 tilePosition) => Array.Find(_gridTiles, tile => tile.Position == tilePosition);
+    // Gets the tile from any world point
+    public GridTile GetTileFromWorldPosition(Vector3 worldPosition)
+    {
+        Vector3 tilePosition = _grid.WorldToCell(worldPosition);
+        return GetTileFromTilePosition(tilePosition);
+    }
 
     public void CalculateSelectedTile()
     {
@@ -106,7 +112,7 @@ public class GridManager : MonoBehaviour
         Vector3 gridPosition = _grid.WorldToCell(worldPosition);
 
         // Find the tile for that grid position and set it as the selected tile
-        _selectedTile = GetTileFromPosition(gridPosition);
+        _selectedTile = GetTileFromTilePosition(gridPosition);
 
         // Set the selected tile indicator
         UpdateTileIndicator(_selectedTile);
