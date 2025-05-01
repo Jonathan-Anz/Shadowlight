@@ -161,7 +161,9 @@ MonoBehaviour:
   _attackSpeed: 4
   _attackType: 0
   _projectilePrefab: {fileID: 2008948009553887626, guid: c69a18f4528dfa643b6ea9bace631048, type: 3}
-  _towerVisual: {fileID: 0}
+  _towerVisuals:
+  - {fileID: 8181168768542578230}
+  - {fileID: 2679442002619239380}
   _rangeVisual: {fileID: 4609258771400289375}
   _sellMultiplier: 0.75
 --- !u!58 &2664025195666147972

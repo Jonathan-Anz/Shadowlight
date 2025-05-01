@@ -30,7 +30,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private GameObject _projectilePrefab;
 
     [Header("Visuals")]
-    [SerializeField] private SpriteRenderer _towerVisual;
+    [SerializeField] private SpriteRenderer[] _towerVisuals;
     [SerializeField] private SpriteRenderer _rangeVisual;
 
     [Header("Selling")]
@@ -55,7 +55,7 @@ public class Tower : MonoBehaviour
     public int AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
     public TowerTargetMode TargetMode => _targetMode;
-    public Sprite TowerVisual => _towerVisual.sprite;
+    //public Sprite TowerVisual => _towerVisual.sprite;
     public int SellValue => Mathf.RoundToInt(_orbValue * _sellMultiplier);
     public bool IsDisabled => _isDisabled;
 
@@ -95,6 +95,9 @@ public class Tower : MonoBehaviour
             // Find the current attack target
             _currentTarget = FindCurrentTarget();
 
+            // Flip to face the current target
+            TurnToFaceTarget();
+
             // DEBUG: highlight the current attack target
             //Debug.DrawLine(transform.position, _currentTarget.transform.position, Color.green);
 
@@ -105,6 +108,39 @@ public class Tower : MonoBehaviour
                 Attack();
             }
         }
+    }
+
+    private void TurnToFaceTarget()
+    {
+        // For each tower visual sprite
+        for (int i = 0; i < _towerVisuals.Length; i++)
+        {
+            // Get the current scale
+            Vector3 scale = _towerVisuals[i].transform.localScale;
+
+            // If there is no target
+            if (_currentTarget == null)
+            {
+                // Look left
+                scale.x = Mathf.Abs(scale.x);
+            }
+
+            // Check if the current target is on the left or right
+            if (_currentTarget.transform.position.x <= transform.position.x)
+            {
+                // Look left
+                scale.x = Mathf.Abs(scale.x);
+            }
+            else
+            {
+                // Look right
+                scale.x = -Mathf.Abs(scale.x);
+            }
+
+            // Reapply the scale
+            _towerVisuals[i].transform.localScale = scale;
+        }
+
     }
     
     // Changes the target mode of the tower (in a cycle)
