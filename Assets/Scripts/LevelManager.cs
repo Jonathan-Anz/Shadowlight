@@ -101,7 +101,9 @@ public class LevelManager : MonoBehaviour
         // Update the UI
         TextUIManager.Instance.UpdateLivesText(GameManager.Instance.PlayerLives);
         TextUIManager.Instance.UpdateOrbsText(GameManager.Instance.PlayerOrbs);
+        TextUIManager.Instance.ToggleTowerInfo(false);
         TextUIManager.Instance.TogglePauseMenu(false);
+        TextUIManager.Instance.ToggleTowerPanels(true);
         TextUIManager.Instance.ToggleLevelCompleteMenu(false);
         TextUIManager.Instance.ToggleGameLostMenu(false);
         TextUIManager.Instance.ToggleGameWinMenu(false);

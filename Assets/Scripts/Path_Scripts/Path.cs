@@ -8,11 +8,11 @@ public class Path : MonoBehaviour
     //[SerializeField] private int _pathCheckDistance = 15; // Set in inspector
     private float _totalPathDistance;
     private LineRenderer _lineRenderer;
+    [SerializeField] private Color _pathColor; // Set in inspector
 
     // Debug properties
     [Header("DEBUG")]
     [SerializeField] private bool _drawPath; // Set in inspector
-    [SerializeField] private Color _pathColor; // Set in inspector
 
     // Getters
     public Transform[] Points => _points;
@@ -52,6 +52,8 @@ public class Path : MonoBehaviour
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.positionCount = _points.Length;
         _lineRenderer.widthMultiplier = _pathWidth;
+        _lineRenderer.startColor = _pathColor;
+        _lineRenderer.endColor = _pathColor;
 
         // Sets the vertices of the line from the path points
         for (int i = 0; i < _points.Length; i++)
