@@ -87,6 +87,7 @@ public class GridManager : MonoBehaviour
 
     public void ResetGrid()
     {
+        _selectedTower = null;
         for (int i = 0; i < _gridTiles.Length; i++)
         {
             if (_gridTiles[i].HasTower) Destroy(_gridTiles[i].Tower.gameObject);
