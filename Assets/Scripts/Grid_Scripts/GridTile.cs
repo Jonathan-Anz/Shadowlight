@@ -13,6 +13,9 @@ public class GridTile
     private float _burnMultiplier;
     private float _healMultiplier;
 
+    // Burning
+    private GridTileFireEffect _fireEffect;
+
     // Constructor
     public GridTile(Vector3 position, float burnThreshold, float burnMultiplier, float healMultiplier)
     {
@@ -95,7 +98,17 @@ public class GridTile
 
     public void HighlightBurnedTile()
     {
-        if (BurnTimer <= 0f) return;
+        if (BurnTimer <= 0f)
+        {
+            // Remove the fire effect, if there is one
+            if (_fireEffect != null)
+            {
+                GridManager.Instance.RemoveFireEffect(_fireEffect);
+                _fireEffect = null;
+            }
+
+            return;
+        }
 
         // Map burn timer to 0-1
         float percent = Mathf.Clamp01(BurnTimer / _burnThreshold);
@@ -104,10 +117,24 @@ public class GridTile
         Color lerpedColor = Color.Lerp(Color.white, Color.yellow, percent);
 
         // Make the color red if it is burnt
-        if (IsBurnt) lerpedColor = Color.red;
+        if (IsBurnt) lerpedColor = Colors.redOrange;
 
-        // Draw a circle with the lerped color
+        lerpedColor.a = percent;
+
+        // DEBUG: Draw a circle with the lerped color
         DebugExtension.DebugCircle(Position, -Vector3.forward, lerpedColor, 0.5f);
+
+        // Update the fire effect
+        if (_fireEffect == null)
+        {
+            // There isn't a fire effect so spawn it
+            _fireEffect = GridManager.Instance.SpawnFireEffect(this, lerpedColor);
+        }
+        else
+        {
+            // There already is one so update it with the proper color
+            _fireEffect.UpdateFireEffect(lerpedColor);
+        }
     }
 
 }

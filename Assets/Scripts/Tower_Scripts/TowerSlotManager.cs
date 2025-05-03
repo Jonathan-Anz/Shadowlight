@@ -28,7 +28,7 @@ public class TowerSlotManager : MonoBehaviour
 
         // Get tower slots
         TowerSlot[] towerSlots = _towerSlotContainer.GetComponentsInChildren<TowerSlot>();
-        Debug.Log(towerSlots);
+        //Debug.Log(towerSlots);
         foreach (TowerSlot slot in towerSlots)
             _towerSlots.Add(slot);
     }

@@ -875,7 +875,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &428901282
 Transform:
   m_ObjectHideFlags: 0
@@ -6629,6 +6629,7 @@ MonoBehaviour:
   _burnThreshold: 2
   _burnMultiplier: 3
   _healMultiplier: 1
+  _fireEffect: {fileID: 6455843974341694803, guid: a05a5f207ab937c4da854a3a3fde96cd, type: 3}
 --- !u!224 &2874981651682580133 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6858484802026066927, guid: 10bf2a3795ab6064b912340be80ac4cd, type: 3}
@@ -7778,7 +7779,7 @@ MonoBehaviour:
   - Enemies: 000000000100000002000000
   - Enemies: 02000000020000000200000002000000
   _darkForestWaves:
-  - Enemies: 0100000001000000
+  - Enemies: 01000000
   - Enemies: 02000000020000000200000002000000
   _mushroomForestWaves:
   - Enemies: 02000000

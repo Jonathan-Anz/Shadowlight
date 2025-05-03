@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
@@ -33,6 +34,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private float _burnMultiplier = 1.5f;
     [SerializeField] private float _healMultiplier = 0.75f;
     private List<Vector3> tilesInBurnRange = new List<Vector3>();
+    [SerializeField] private GameObject _fireEffect;
     //private List<GridTile> _tilesInRange = new List<GridTile>();
     //private Dictionary<GridTile, float> _burningTiles = new Dictionary<GridTile, float>();
 
@@ -328,6 +330,18 @@ public class GridManager : MonoBehaviour
 
 
         return tilesPositionsInRange;
+    }
+
+    // Burning
+    public GridTileFireEffect SpawnFireEffect(GridTile tile, Color color)
+    {
+       GridTileFireEffect fireEffect = Instantiate(_fireEffect, tile.Position, Quaternion.identity).GetComponent<GridTileFireEffect>();
+       fireEffect.UpdateFireEffect(color);
+       return fireEffect;
+    }
+    public void RemoveFireEffect(GridTileFireEffect fireEffect)
+    {
+        Destroy(fireEffect.gameObject);
     }
 
     public void HighlightGridVisual(bool value) => _gridVisual.enabled = value;

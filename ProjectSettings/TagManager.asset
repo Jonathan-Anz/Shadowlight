@@ -45,6 +45,9 @@ TagManager:
   - name: Path
     uniqueID: 1402463427
     locked: 0
+  - name: Fire
+    uniqueID: 2937713311
+    locked: 0
   - name: Entities
     uniqueID: 524422767
     locked: 0
