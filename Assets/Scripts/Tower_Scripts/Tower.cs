@@ -45,6 +45,7 @@ public class Tower : MonoBehaviour
     private bool _isDisabled = true;
     private float _attackTimer = 0f;
     private Enemy _currentTarget = null;
+    [SerializeField] private Animator _attackAnimator;
 
     // Range
     private CircleCollider2D _rangeCollider;
@@ -178,10 +179,12 @@ public class Tower : MonoBehaviour
         if (_attackType == TowerAttackType.Melee)
         {
             // If melee tower:
-            // Remove health from enemy
-            // Play animation/sound
 
+            // Remove health from enemy
             _currentTarget.DamageEnemy(_attackPower);
+
+            // Play animation/sound
+            _attackAnimator?.SetTrigger("Attack");
         }
         else if (_attackType == TowerAttackType.Ranged)
         {

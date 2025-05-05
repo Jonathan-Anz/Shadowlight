@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // TEMP: Load a level for the first time
-        // Eventually change to load from saved game data
         StartNewGame();
     }
 
@@ -87,6 +85,9 @@ public class GameManager : MonoBehaviour
         // Make sure the game is unpaused
         _isPaused = false;
         Time.timeScale = 1f;
+
+        // Save the level to return to (NOT USED)
+        //LevelManager.Instance.SaveCurrentLevel();
 
         SceneManager.LoadScene("TitleScene");
     }

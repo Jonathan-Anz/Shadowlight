@@ -20,6 +20,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Levels _firstLevel = Levels.DarkForest;
     [SerializeField] private Levels _lastLevel = Levels.SnowyForest; // Used to determine the end of the game
 
+    // Saved level
+    //private Levels _savedLevel = Levels.DarkForest;
+
     // Level gameobjects (maybe use array instead?)
     private GameObject _currentLevelObject;
     [SerializeField] private GameObject _testLevel;
@@ -37,6 +40,7 @@ public class LevelManager : MonoBehaviour
     public Levels CurrentLevel => _currentLevel;
     public Levels FirstLevel => _firstLevel;
     public Levels LastLevel => _lastLevel;
+    //public Levels SavedLevel => _savedLevel;
 
 
     private void Awake()
@@ -149,4 +153,12 @@ public class LevelManager : MonoBehaviour
                 break;
         }
     }
+
+    // NOT USED BECAUSE SAVE DATA DOESN'T PERSIST BETWEEN SCENES
+    // public void SaveCurrentLevel()
+    // {
+    //     _savedLevel = _currentLevel;
+    //     Debug.Log($"Set {_currentLevel} as saved level");
+    // }
+
 }
