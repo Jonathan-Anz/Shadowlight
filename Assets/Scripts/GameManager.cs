@@ -52,9 +52,10 @@ public class GameManager : MonoBehaviour
         LevelManager.Instance.LoadLevel(LevelManager.Instance.FirstLevel);
 
         // TEMP: Add base towers to player
-        TowerSlotManager.Instance.AddTower(TowerType.Bear, 10);
-        TowerSlotManager.Instance.AddTower(TowerType.Bat, 5);
-        TowerSlotManager.Instance.AddTower(TowerType.Bird, 5);
+        TowerSlotManager.Instance.AddTower(TowerType.Bear);
+        TowerSlotManager.Instance.AddTower(TowerType.Bat);
+        TowerSlotManager.Instance.AddTower(TowerType.Bird);
+        //TowerSlotManager.Instance.AddTower(TowerType.Squirrel, 3);
     }
     public void RetryLevel()
     {

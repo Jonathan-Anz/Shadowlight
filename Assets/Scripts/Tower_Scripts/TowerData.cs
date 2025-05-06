@@ -9,6 +9,7 @@ public class TowerData : ScriptableObject
     public TowerType towerType;
     public GameObject towerPrefab;
     public Sprite towerSprite;
+    public int towerCost;
 
     // May contain upgrade information in the future
 }

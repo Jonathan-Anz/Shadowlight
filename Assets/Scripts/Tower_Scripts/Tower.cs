@@ -14,7 +14,7 @@ public enum TowerAttackType
 
 public enum TowerType 
 { 
-    Bear, Bat, Bird,
+    Bear, Bat, Bird, Squirrel, Fox, Bees
 }
 public class Tower : MonoBehaviour
 {
@@ -22,6 +22,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private string _name;
     [SerializeField] private float _range;
     [SerializeField] private int _attackPower;
+    // The time between attacks
     [SerializeField] private float _attackSpeed;
     [SerializeField] private TowerAttackType _attackType;
     private TowerTargetMode _targetMode = TowerTargetMode.First;

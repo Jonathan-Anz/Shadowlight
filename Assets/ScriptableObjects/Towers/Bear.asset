@@ -15,3 +15,4 @@ MonoBehaviour:
   towerType: 0
   towerPrefab: {fileID: 394382112967063073, guid: d91373402bfd8e14fbff7b9f2e473962, type: 3}
   towerSprite: {fileID: 21300000, guid: ddd3fccd72d423c4b9c3ff7a6af6b7fa, type: 3}
+  towerCost: 10

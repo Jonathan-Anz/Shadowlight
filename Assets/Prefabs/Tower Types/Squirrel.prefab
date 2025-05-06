@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6054550130564200304}
   - component: {fileID: 8542490874462912248}
   m_Layer: 0
-  m_Name: Bird
+  m_Name: Squirrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,17 +48,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef059916bbdaaac4bac3bf86ff9c135a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Bird
-  _range: 4
-  _attackPower: 2
-  _attackSpeed: 0.75
+  _name: Squirrel
+  _range: 2
+  _attackPower: 4
+  _attackSpeed: 0.5
   _attackType: 1
-  _projectilePrefab: {fileID: 2008948009553887626, guid: fd6e4a1b285dd2b43a6806cc80c83018, type: 3}
+  _projectilePrefab: {fileID: 2008948009553887626, guid: 9db37ee5165bbd04cb981d2763ecf272, type: 3}
   _towerVisuals:
   - {fileID: 1624995657821105028}
   _rangeVisual: {fileID: 6687990126529995592}
   _sellMultiplier: 0.75
-  _attackAnimator: {fileID: 0}
+  _attackAnimator: {fileID: 4057824262309893858}
 --- !u!58 &6054550130564200304
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ SpriteRenderer:
   m_SortingLayerID: 524422767
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c924da2fc62eef0418556a8a45c7b956, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e355330668acd3144aa94cada76a8210, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -300,7 +300,7 @@ Animator:
   m_GameObject: {fileID: 5883962923276684584}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0e441c111953bd34e851741eed090fb2, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

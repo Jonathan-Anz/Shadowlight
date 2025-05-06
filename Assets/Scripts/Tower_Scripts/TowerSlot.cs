@@ -115,6 +115,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Makes the object follow the mouse.
         //transform.position = Input.mousePosition;
 
+        // Make sure the slot is active
+        if (!_isActive) return;
+
         // Check if the player has enough orbs
         if (GameManager.Instance.PlayerOrbs < _orbCost) return;
 
@@ -134,6 +137,9 @@ public class TowerSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // Finds the mouse position relative to the world position.
         // Without using camera, it will use canvas position instead.
         //Vector3 towerPosition = _towerSlotManager.cam.ScreenToWorldPoint(transform.position);
+
+        // Make sure slot is active
+        if (!_isActive) return;
 
         // Check if the player has enough orbs
         if (GameManager.Instance.PlayerOrbs < _orbCost) return;

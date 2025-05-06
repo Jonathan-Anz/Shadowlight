@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d51616eb46e8f0498f77f609be38942, type: 3}
-  m_Name: Bird
+  m_Name: Squirrel
   m_EditorClassIdentifier: 
-  towerType: 2
-  towerPrefab: {fileID: 914669017360511019, guid: 3af5583af861dca4f8db88b5fba5c1d4, type: 3}
-  towerSprite: {fileID: 21300000, guid: 8f96d5ed256f4cd4ba7d77f148eb807e, type: 3}
-  towerCost: 5
+  towerType: 3
+  towerPrefab: {fileID: 914669017360511019, guid: 7b6201ea54f773a488cc7bc07d6159d6, type: 3}
+  towerSprite: {fileID: 21300000, guid: 5848fde644500334380c619de070c9fe, type: 3}
+  towerCost: 3

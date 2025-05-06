@@ -28,13 +28,13 @@ public class TowerSlotManager : MonoBehaviour
 
         // Get tower slots
         TowerSlot[] towerSlots = _towerSlotContainer.GetComponentsInChildren<TowerSlot>();
-        //Debug.Log(towerSlots);
+        //Debug.Log($"Tower slots length: {towerSlots.Length}");
         foreach (TowerSlot slot in towerSlots)
             _towerSlots.Add(slot);
     }
 
     // Adds tower to the leftmost empty slot
-    public void AddTower(TowerType tower, int cost)
+    public void AddTower(TowerType tower)
     {
         // Makes sure method does not run when tower slots are full
         if (towerInSlotCount > _towerSlots.Count)
@@ -52,12 +52,18 @@ public class TowerSlotManager : MonoBehaviour
             }
         }
 
+        if (towerData == null)
+        {
+            Debug.LogWarning($"Error, TowerData for {tower} not found!");
+            return;
+        }
+
         // Find leftmost empty slot
         for (int i = 0; i < _towerSlots.Count; i++)
         {
             if (_towerSlots[i].Tower == null)
             {
-                _towerSlots[i].SetTower(towerData, cost);
+                _towerSlots[i].SetTower(towerData, towerData.towerCost);
                 return;
             }
         }

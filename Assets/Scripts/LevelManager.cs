@@ -33,8 +33,12 @@ public class LevelManager : MonoBehaviour
     // Level rewards
     [Header("Dark Forest Rewards")]
     [SerializeField] private int _darkForestOrbReward = 0;
+    [SerializeField] private TowerType _darkForestTowerReward1;
+    
     [Header("Mushroom Forest Rewards")]
     [SerializeField] private int _mushroomForestOrbReward = 0;
+    [SerializeField] private TowerType _mushroomForestTowerReward1;
+    [SerializeField] private TowerType _mushroomForestTowerReward2;
 
     // Getters
     public Levels CurrentLevel => _currentLevel;
@@ -145,9 +149,12 @@ public class LevelManager : MonoBehaviour
         {
             case Levels.DarkForest:
                 GameManager.Instance.AddOrbs(_darkForestOrbReward);
+                TowerSlotManager.Instance.AddTower(_darkForestTowerReward1);
                 break;
             case Levels.MushroomForest:
                 GameManager.Instance.AddOrbs(_mushroomForestOrbReward);
+                TowerSlotManager.Instance.AddTower(_mushroomForestTowerReward1);
+                TowerSlotManager.Instance.AddTower(_mushroomForestTowerReward2);
                 break;
             default:
                 break;
