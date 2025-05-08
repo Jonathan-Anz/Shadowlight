@@ -81,8 +81,9 @@ public class EnemyManager : MonoBehaviour
     {
         _waveStarted = false;
 
-        // Check if all the waves are complete
-        if (_currentWave == _currentLevelWaves.Length)
+        // Check if all the waves are complete and player is still alive
+        if (_currentWave == _currentLevelWaves.Length &&
+            GameManager.Instance.PlayerLives > 0)
         {
             _finishedLevel = true;
             GameManager.Instance.LevelCompleted();
