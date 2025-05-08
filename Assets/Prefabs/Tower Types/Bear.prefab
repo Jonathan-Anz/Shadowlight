@@ -49,10 +49,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Bear
-  _range: 2
+  _range: 1.5
   _attackPower: 6
-  _attackSpeed: 4
+  _attackSpeed: 3
   _attackType: 0
+  _stunsEnemies: 0
+  _stunDuration: 0
+  _slowsEnemies: 0
+  _slowReduction: 0
+  _slowDuration: 0
   _projectilePrefab: {fileID: 2008948009553887626, guid: c69a18f4528dfa643b6ea9bace631048, type: 3}
   _towerVisuals:
   - {fileID: 7085757413785224758}

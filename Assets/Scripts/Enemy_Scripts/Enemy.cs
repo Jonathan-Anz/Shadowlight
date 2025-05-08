@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,6 +14,9 @@ public class Enemy : MonoBehaviour
     [Header("Burn offset 0 is the current tile, 1 is previous tile, etc")]
     [SerializeField] private int _burnOffset;
     [SerializeField] private float _burnRadius;
+
+    // Effects
+    private float _originalSpeed = 0f;
 
     // Each enemy needs a path to follow
     private Path _path = null;
@@ -41,6 +45,7 @@ public class Enemy : MonoBehaviour
     public void InitializeEnemy()
     {
         _hasDied = false;
+        _originalSpeed = _speed;
 
         // Set this enemy's path
         _path = PathManager.Instance.ActivePath;
@@ -124,6 +129,37 @@ public class Enemy : MonoBehaviour
                 EnemyManager.Instance.EnemyReachedEndOfPath(this);
             }
         }
+    }
+
+    // Enemy effects
+    public void StunEnemy(float duration)
+    {
+        StartCoroutine(StunEnemyForSeconds(duration));
+    }
+    private IEnumerator StunEnemyForSeconds(float duration)
+    {
+        // Save the old speed and make the enemy stop moving
+        _speed = 0f;
+
+        yield return new WaitForSeconds(duration);
+
+        // After the duration, return the speed to normal
+        _speed = _originalSpeed;
+    }
+
+    public void SlowEnemy(float reduction, float duration)
+    {
+        StartCoroutine(SlowEnemyForSeconds(reduction, duration));
+    }
+    private IEnumerator SlowEnemyForSeconds(float reduction, float duration)
+    {
+        // Slow enemy
+        _speed *= reduction;
+
+        yield return new WaitForSeconds(duration);
+
+        // After the duration, return the speed to normal
+        _speed = _originalSpeed;
     }
 
     // Tiles

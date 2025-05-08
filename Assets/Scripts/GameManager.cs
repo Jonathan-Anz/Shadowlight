@@ -55,7 +55,9 @@ public class GameManager : MonoBehaviour
         TowerSlotManager.Instance.AddTower(TowerType.Bear);
         TowerSlotManager.Instance.AddTower(TowerType.Bat);
         TowerSlotManager.Instance.AddTower(TowerType.Bird);
-        //TowerSlotManager.Instance.AddTower(TowerType.Squirrel, 3);
+        //TowerSlotManager.Instance.AddTower(TowerType.Squirrel);
+        //TowerSlotManager.Instance.AddTower(TowerType.Fox);
+        //TowerSlotManager.Instance.AddTower(TowerType.Beehive);
     }
     public void RetryLevel()
     {

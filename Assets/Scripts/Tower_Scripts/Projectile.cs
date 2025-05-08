@@ -16,14 +16,18 @@ public class Projectile : MonoBehaviour
     [SerializeField] private int _pierce;
     [SerializeField] private float _lifetime;
 
+    // Owner
+    private Tower _owner;
+
     // Each projectile has a target to follow
     private Enemy _target;
     private Vector3 _moveDir = Vector3.zero;
 
 
     // Initializer (call when the projectile is spawned)
-    public void InitializeProjectile(Enemy target, int damage)
+    public void InitializeProjectile(Tower owner, Enemy target, int damage)
     {
+        _owner = owner;
         _target = target;
         _damage = damage;
 
@@ -74,7 +78,11 @@ public class Projectile : MonoBehaviour
             //Debug.Log("Projectile hit enemy!");
 
             // Damage the enemy
-            collision.gameObject.GetComponent<Enemy>().DamageEnemy(_damage);
+            Enemy target = collision.gameObject.GetComponent<Enemy>();
+            //Debug.Log($"Hit: {target.name}");
+            target.DamageEnemy(_damage);
+            if (_owner.StunsEnemies) target.StunEnemy(_owner.StunDuration);
+            if (_owner.SlowsEnemies) target.SlowEnemy(_owner.SlowReduction, _owner.SlowDuration);
 
             // If the projectile is seeking and the enemy it hit is the target, destroy it
             if (_movementType == ProjectileMovementType.Seeking &&

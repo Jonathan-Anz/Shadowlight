@@ -14,7 +14,7 @@ public enum TowerAttackType
 
 public enum TowerType 
 { 
-    Bear, Bat, Bird, Squirrel, Fox, Bees
+    Bear, Bat, Bird, Squirrel, Fox, Beehive
 }
 public class Tower : MonoBehaviour
 {
@@ -26,6 +26,15 @@ public class Tower : MonoBehaviour
     [SerializeField] private float _attackSpeed;
     [SerializeField] private TowerAttackType _attackType;
     private TowerTargetMode _targetMode = TowerTargetMode.First;
+
+    // Special effects
+    [Header("Special Effects")]
+    [SerializeField] private bool _stunsEnemies = false;
+    [SerializeField] private float _stunDuration = 0f;
+    [SerializeField] private bool _slowsEnemies = false;
+    [SerializeField, Range(0f, 1f)] private float _slowReduction = 0f;
+    [SerializeField] private float _slowDuration = 0f;
+
 
     [Header("Projectile (Only used if tower is ranged)")]
     [SerializeField] private GameObject _projectilePrefab;
@@ -58,6 +67,11 @@ public class Tower : MonoBehaviour
     public float AttackSpeed => _attackSpeed;
     public TowerTargetMode TargetMode => _targetMode;
     //public Sprite TowerVisual => _towerVisual.sprite;
+    public bool StunsEnemies => _stunsEnemies;
+    public float StunDuration => _stunDuration;
+    public bool SlowsEnemies => _slowsEnemies;
+    public float SlowReduction => _slowReduction;
+    public float SlowDuration => _slowDuration;
     public int SellValue => Mathf.RoundToInt(_orbValue * _sellMultiplier);
     public bool IsDisabled => _isDisabled;
 
@@ -125,6 +139,8 @@ public class Tower : MonoBehaviour
             {
                 // Look left
                 scale.x = Mathf.Abs(scale.x);
+                _towerVisuals[i].transform.localScale = scale;
+                continue;
             }
 
             // Check if the current target is on the left or right
@@ -183,18 +199,22 @@ public class Tower : MonoBehaviour
 
             // Remove health from enemy
             _currentTarget.DamageEnemy(_attackPower);
+            if (_stunsEnemies) _currentTarget.StunEnemy(_stunDuration);
+            if (_slowsEnemies) _currentTarget.SlowEnemy(_slowReduction, _slowDuration);
 
             // Play animation/sound
-            _attackAnimator?.SetTrigger("Attack");
+            if (_attackAnimator != null) _attackAnimator.SetTrigger("Attack");
         }
         else if (_attackType == TowerAttackType.Ranged)
         {
             // If ranged tower:
-            // Spawn a projectile prefab
-            // Play animation/sound
 
+            // Spawn a projectile prefab
             Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.InitializeProjectile(_currentTarget, _attackPower);
+            projectile.InitializeProjectile(this, _currentTarget, _attackPower);
+
+            // Play animation/sound
+            if (_attackAnimator != null) _attackAnimator.SetTrigger("Attack");
         }
     }
     #endregion

@@ -5,7 +5,7 @@ using UnityEngine;
 public enum EnemyType 
 {
     // Example
-    Small, Medium, Large
+    EmberEnemy, LavaGolem, MushroomEnemy
 }
 
 public class EnemyManager : MonoBehaviour
@@ -15,6 +15,9 @@ public class EnemyManager : MonoBehaviour
 
     // Enemy prefabs
     [SerializeField] private GameObject _testEnemyPrefab;
+    [SerializeField] private GameObject _emberEnemyPrefab;
+    [SerializeField] private GameObject _lavaGolemPrefab;
+    [SerializeField] private GameObject _mushroomEnemyPrefab;
 
     private List<Enemy> _enemyList = new List<Enemy>();
 
@@ -123,12 +126,11 @@ public class EnemyManager : MonoBehaviour
 
     private GameObject EnemyTypeToPrefab(EnemyType type)
     {
-        // Eventually add real enemy types and prefabs
         switch (type)
         {
-            case EnemyType.Small: return _testEnemyPrefab;
-            case EnemyType.Medium: return _testEnemyPrefab;
-            case EnemyType.Large: return _testEnemyPrefab;
+            case EnemyType.EmberEnemy: return _emberEnemyPrefab;
+            case EnemyType.LavaGolem: return _lavaGolemPrefab;
+            case EnemyType.MushroomEnemy: return _mushroomEnemyPrefab;
             default: return _testEnemyPrefab;
         }
     }

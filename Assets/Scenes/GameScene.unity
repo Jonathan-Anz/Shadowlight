@@ -274,7 +274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2371266604533830692, guid: 5eb53290c202748438becc39001d0876, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 2371266604533830692, guid: 5eb53290c202748438becc39001d0876, type: 3}
       propertyPath: m_LocalPosition.y
@@ -370,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9144032581894098908, guid: 5eb53290c202748438becc39001d0876, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 9144032581894098908, guid: 5eb53290c202748438becc39001d0876, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3723,6 +3723,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 613f9d211096e814499863ef3f48a070, type: 2}
   - {fileID: 11400000, guid: c3a67c38bbe33b6439ae602c4c8ebc62, type: 2}
   - {fileID: 11400000, guid: ff065694f905834458db5ff0d291cabe, type: 2}
+  - {fileID: 11400000, guid: 61993721ac2539e4b80fc19a53a9ec4f, type: 2}
+  - {fileID: 11400000, guid: a3062d3e726aeb040bf3b88ef2478435, type: 2}
   _towerSlotContainer: {fileID: 4390968081016842501}
 --- !u!4 &1513653352
 Transform:
@@ -6100,6 +6102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testEnemyPrefab: {fileID: 2680834044420995133, guid: dd59ec090d3ee844082241fdecdb0f8a, type: 3}
+  _emberEnemyPrefab: {fileID: 2680834044420995133, guid: 4229998782824114f9908a1f80325367, type: 3}
+  _lavaGolemPrefab: {fileID: 2680834044420995133, guid: 26c44f60c0225a14aa270b196535195f, type: 3}
+  _mushroomEnemyPrefab: {fileID: 2680834044420995133, guid: 016f3b15837bdc5418ae5a5d77596918, type: 3}
 --- !u!224 &2112783582404914195
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7780,19 +7785,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0728ddeb0086b4b867dd71395036b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minSpawnVariation: 0.25
+  _minSpawnVariation: 0.3
   _maxSpawnVariation: 1
   _testLevelWaves:
   - Enemies: 0000000000000000
   - Enemies: 000000000100000002000000
   - Enemies: 02000000020000000200000002000000
   _darkForestWaves:
-  - Enemies: 01000000
-  - Enemies: 02000000020000000200000002000000
+  - Enemies: 0000000000000000
+  - Enemies: 000000000000000000000000
+  - Enemies: 0000000000000000000000000000000000000000
+  - Enemies: 00000000000000000000000001000000
+  - Enemies: 0000000000000000000000000100000001000000
   _mushroomForestWaves:
-  - Enemies: 02000000
+  - Enemies: 000000000000000000000000
+  - Enemies: 000000000000000002000000
+  - Enemies: 020000000200000002000000
+  - Enemies: 00000000020000000200000002000000
+  - Enemies: 02000000020000000200000001000000
   _snowyForestWaves:
-  - Enemies: 02000000
+  - Enemies: 0000000000000000000000000000000001000000
+  - Enemies: 000000000000000000000000000000000100000001000000
+  - Enemies: 0000000000000000000000000100000000000000010000000100000000000000
 --- !u!114 &6235365678516623105
 MonoBehaviour:
   m_ObjectHideFlags: 0

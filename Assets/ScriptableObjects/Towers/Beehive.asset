@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d51616eb46e8f0498f77f609be38942, type: 3}
-  m_Name: Squirrel
+  m_Name: Beehive
   m_EditorClassIdentifier: 
-  towerType: 3
-  towerPrefab: {fileID: 914669017360511019, guid: 7b6201ea54f773a488cc7bc07d6159d6, type: 3}
-  towerSprite: {fileID: 21300000, guid: 664afeddd3515044d95b90c6c0f400a7, type: 3}
-  towerCost: 3
+  towerType: 5
+  towerPrefab: {fileID: 914669017360511019, guid: 8c8a5a4db4c3f1141b5e47350b0255e7, type: 3}
+  towerSprite: {fileID: 21300000, guid: ca51f3a4e57edac4e8fe8a66bad8ce26, type: 3}
+  towerCost: 10
