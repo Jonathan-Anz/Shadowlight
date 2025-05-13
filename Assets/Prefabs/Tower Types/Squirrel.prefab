@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Squirrel
-  _range: 1.5
+  _range: 2
   _attackPower: 1
   _attackSpeed: 1.5
   _attackType: 1

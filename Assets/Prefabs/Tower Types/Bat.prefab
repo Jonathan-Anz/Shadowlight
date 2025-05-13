@@ -158,7 +158,7 @@ MonoBehaviour:
   _name: Bat
   _range: 2
   _attackPower: 2
-  _attackSpeed: 0.5
+  _attackSpeed: 0.75
   _attackType: 0
   _stunsEnemies: 0
   _stunDuration: 0

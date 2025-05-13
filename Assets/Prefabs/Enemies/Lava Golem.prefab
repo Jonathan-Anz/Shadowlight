@@ -49,11 +49,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Lava Golem
-  _health: 25
+  _health: 30
   _speed: 1.5
   _damage: 40
   _orbAmount: 5
-  _burnOffset: 1
+  _burnOffset: 3
   _burnRadius: 2
 --- !u!212 &8626332155187017865
 SpriteRenderer:

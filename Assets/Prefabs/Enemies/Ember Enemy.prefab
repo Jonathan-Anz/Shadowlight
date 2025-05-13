@@ -53,7 +53,7 @@ MonoBehaviour:
   _speed: 2
   _damage: 20
   _orbAmount: 1
-  _burnOffset: 0
+  _burnOffset: 2
   _burnRadius: 1
 --- !u!212 &8626332155187017865
 SpriteRenderer:

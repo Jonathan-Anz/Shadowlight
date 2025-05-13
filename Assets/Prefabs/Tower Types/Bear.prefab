@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Bear
   _range: 1.5
-  _attackPower: 6
-  _attackSpeed: 3
+  _attackPower: 10
+  _attackSpeed: 2
   _attackType: 0
   _stunsEnemies: 0
   _stunDuration: 0

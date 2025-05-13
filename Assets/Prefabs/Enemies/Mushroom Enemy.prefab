@@ -49,11 +49,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Mushroom Enemy
-  _health: 10
-  _speed: 3
+  _health: 15
+  _speed: 5
   _damage: 10
   _orbAmount: 3
-  _burnOffset: 1
+  _burnOffset: 2
   _burnRadius: 1
 --- !u!212 &8626332155187017865
 SpriteRenderer:
